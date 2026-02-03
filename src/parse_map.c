@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/03 18:21:17 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/02/03 21:00:26 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 
@@ -38,6 +50,23 @@ static int	count_lines(char *file_path)
 	return (lines);
 }
 
+static int find_max_width(t_map *map)
+{
+	int i;
+	int max;
+	int len;
+
+	i = 0;
+	max = 0;
+	while(i < map->height)
+	{
+		len = ft_strlen(map->grid[i]);
+		if (len > max)
+			max = len;
+		i++;
+	}
+	return (max);
+}
 static int	read_map_lines(int fd, t_map *map)
 {
 	int		i;
@@ -53,6 +82,9 @@ static int	read_map_lines(int fd, t_map *map)
 		line = get_next_line(fd);
 	}
 	map->grid[i] = NULL;
+	map->width = find_max_width(map); //padding buna göre yapılıcak.
+	if (validate_map(map) == -1) // yeni eklendi
+		return (-1);
 	return (0);
 }
 
@@ -80,7 +112,6 @@ int	map_parse(char *file_path, t_map *map)
 		close(fd);
 		return (-1);
 	}
-	map->width = ft_strlen(map->grid[0]);
 	close(fd);
 	return (0);
 }
