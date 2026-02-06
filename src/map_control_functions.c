@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/03 20:57:16 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/06 23:11:09 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,29 +74,6 @@ static int validate_player(t_map *map) // bu fonksiyon hem player sayı kontrol�
 	return (0);
 }
 
-void flood_fill(t_map *map, int x, int y, int *open) // dümdüz flood fill, F ile dolduracak gidebildiğim yerleri.
-{
-	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
-	{
-		*open = -1;
-		return;
-	}
-	if (*open == -1)
-		return;
-	if (map->copy_grid[y][x] == ' ' || map->copy_grid[y][x] == '\0')
-	{
-		*open = -1;
-		return;
-	}
-	if (map->copy_grid[y][x] == '1' || map->copy_grid[y][x] == 'F')
-		return;
-	map->copy_grid[y][x] = 'F';
-	flood_fill(map, x + 1, y, open);
-	flood_fill(map, x, y + 1, open);
-	flood_fill(map, x - 1, y, open);
-	flood_fill(map, x, y - 1, open);
-}
-
 static int is_map_closed(t_map *map) // bu fonksiyon mapin kapalı olup olmadığını kontrol eder.
 {
 	int open;
@@ -106,7 +83,7 @@ static int is_map_closed(t_map *map) // bu fonksiyon mapin kapalı olup olmadı�
 		return (-1);
 	flood_fill(map, map->player_x, map->player_y, &open);
 	free_grid(map->copy_grid, map->height); // bu fonk yazılacak.
-	//map->copy_grid = NULL; // freelendikten sonra bunu aç.
+	map->copy_grid = NULL; // freelendikten sonra bunu aç.
 	return (open);
 }
 
@@ -122,14 +99,19 @@ int validate_map(t_map *map) // bu fonksiyon mapin doğru olup olmadığını ko
 		error_msg("validate player error!");
 		return (-1);
 	}
-	if (is_map_closed(map) == -1)
-	{
-		error_msg("map is not closed!");
-		return (-1);
-	}
 	if (map->player_num != 1)
 	{
 		error_msg("player count error!");
+		return (-1);
+	}
+	if (check_zero_boundaries(map) == -1)
+	{
+		error_msg("zero num error!");
+		return (-1);
+	}
+	if (is_map_closed(map) == -1)
+	{
+		error_msg("map is not closed!");
 		return (-1);
 	}
 	return (0);
