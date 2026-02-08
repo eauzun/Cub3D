@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/03 18:21:10 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/03 19:03:12 by ecakdemi         ###   ########.fr       */
+/*   Created: 2024/10/27 18:04:10 by emuzun            #+#    #+#             */
+/*   Updated: 2024/11/03 18:15:06 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "libft.h"
 
-
-int	error_msg(char *msg)
+char	*ft_strchr(const char *s, int c)
 {
-	ft_putendl_fd("Error", 2);
-	ft_putendl_fd(msg, 2);
-	return (-1);
-}
+	char	*ptr;
 
+	ptr = (char *)s;
+	while (*ptr)
+	{
+		if (*ptr == (char)c)
+			return (ptr);
+		ptr++;
+	}
+	if ((char)c == 0)
+		return (ptr);
+	return (NULL);
+}

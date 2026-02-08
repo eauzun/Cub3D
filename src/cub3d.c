@@ -1,4 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/03 18:21:07 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/02/06 22:05:44 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
+
+//return -1 olan her yerde geçmişteki şeyleri freelemeyi unutma!
+
 
 int main(int argc, char **argv)
 {
@@ -15,7 +30,7 @@ int main(int argc, char **argv)
     //main->check_validation -> iç içe diğer check'ler -> ileride .h'da ayarlanacak error msg döndülerine göre 
     //error_msg modifiye edilerek int	error_msg(char *msg, int status) ile mevcut statuse göre error msg döndürebilir
 
-    if (map_parse(argv[1], &map) == -1)
+    if (map_parse(argv[1], &map) == -1) //bu kalkıcak
     {
         write(2, "Failed to parse map\n", 20);
         return (1);

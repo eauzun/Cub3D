@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/03 18:21:10 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/03 19:03:12 by ecakdemi         ###   ########.fr       */
+/*   Created: 2024/10/22 01:34:59 by emuzun            #+#    #+#             */
+/*   Updated: 2024/10/22 01:37:47 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "libft.h"
 
-
-int	error_msg(char *msg)
+void	*ft_memmove(void *dst, const void *src, size_t n)
 {
-	ft_putendl_fd("Error", 2);
-	ft_putendl_fd(msg, 2);
-	return (-1);
+	if (!dst && !src)
+		return (NULL);
+	if (dst <= src)
+		return (ft_memcpy(dst, src, n));
+	else
+		while (n--)
+			((char *)dst)[n] = ((char *)src)[n];
+	return (dst);
 }
-

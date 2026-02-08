@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/03 18:21:10 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/03 19:03:12 by ecakdemi         ###   ########.fr       */
+/*   Created: 2024/10/22 00:43:33 by emuzun            #+#    #+#             */
+/*   Updated: 2024/10/22 00:45:31 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-
-
-int	error_msg(char *msg)
+int	ft_tolower(int c)
 {
-	ft_putendl_fd("Error", 2);
-	ft_putendl_fd(msg, 2);
-	return (-1);
+	if (c > 64 && c < 91)
+		c += 32;
+	return (c);
 }
-

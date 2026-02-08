@@ -1,22 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/03 18:21:10 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/03 19:03:12 by ecakdemi         ###   ########.fr       */
+/*   Created: 2024/10/28 15:48:54 by emuzun            #+#    #+#             */
+/*   Updated: 2024/11/05 15:57:06 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "libft.h"
 
-
-int	error_msg(char *msg)
+void	ft_putstr_fd(char *s, int fd)
 {
-	ft_putendl_fd("Error", 2);
-	ft_putendl_fd(msg, 2);
-	return (-1);
-}
+	int	i;
 
+	i = 0;
+	if (s != 0)
+	{
+		while (s[i])
+		{
+			write(fd, &s[i], 1);
+			i++;
+		}
+	}
+}
