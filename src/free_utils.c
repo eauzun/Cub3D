@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:12 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/03 20:27:10 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/18 23:57:23 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,16 @@ void free_grid(char **map, int height)
 		i++;
 	}
 	free(map);
+}
+
+void free_exit(t_game *game)
+{
+	int fd;
+
+	if(!game)
+		return(0);
+	if(game->map.copy_grid)
+		free_grid(game->map.copy_grid, game-> map.height);
+	if(&game->map)
+		free_map(game->map);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:15 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/06 23:09:37 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/19 00:23:11 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,25 +28,20 @@ int check_file_extension(char *file_path)
     return (0);
 }
 
-int copy_grid(t_map *map) // bu fonksiyon flood fill için yeni bir map kopyası oluşturur.
+int copy_grid(t_map *map, t_game *game) // bu fonksiyon flood fill için yeni bir map kopyası oluşturur.
 {
     int i;
 
     i = 0;
     map->copy_grid = malloc(sizeof(char *) * map->height);
     if (!map->copy_grid)
-    {
-        error_msg("malloc error");
-        return (-1);
-    }
+        exit_check("memory allocation failed", 1, -1, game); //burayı düzenledim
     while (i < map->height)
     {
         map->copy_grid[i] = ft_strdup(map->grid[i]);
         if (!map->copy_grid[i])
-        {
-            error_msg("strdup error");
-            return (-1);
-        }
+            exit_check("string duplicate failed", 1, -1, game); //burayı düzenledim
+            
         i++;
     }
     return (0);

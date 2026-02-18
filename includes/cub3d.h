@@ -35,5 +35,7 @@ int 	validate_map(t_map *map);
 void	free_grid(char **map, int height);
 int 	check_zero_boundaries(t_map *map);
 void 	flood_fill(t_map *map, int x, int y, int *open);
+int		exit_check(char *msg, int err, int status, t_game *game);
+void	free_game(t_game *game);
 
 #endif
