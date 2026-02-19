@@ -6,7 +6,7 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:12 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/18 23:57:23 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/19 04:10:33 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ void	free_map(t_map *map)
 	map->width = 0;
 }
 
-void free_grid(char **map, int height)
+void	free_grid(char **map, int height)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (!map)
-		return;
+		return ;
 	while (i < height)
 	{
 		if (map[i])
@@ -46,14 +46,26 @@ void free_grid(char **map, int height)
 	free(map);
 }
 
-void free_exit(t_game *game)
+void	free_config(t_config *config)
 {
-	int fd;
+	if (!config)
+		return ;
+	if (config->no)
+		free(config->no);
+	if (config->so)
+		free(config->so);
+	if (config->we)
+		free(config->we);
+	if (config->ea)
+		free(config->ea);
+}
 
-	if(!game)
-		return(0);
-	if(game->map.copy_grid)
-		free_grid(game->map.copy_grid, game-> map.height);
-	if(&game->map)
-		free_map(game->map);
+void	free_game(t_game *game)
+{
+	if (!game)
+		return ;
+	if (game->map.copy_grid)
+		free_grid(game->map.copy_grid, game->map.height);
+	free_map(&game->map);
+	free_config(&game->config);
 }

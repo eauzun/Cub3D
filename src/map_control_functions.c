@@ -6,7 +6,7 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/19 00:16:42 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/19 03:57:41 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ static int validate_player(t_map *map) // bu fonksiyon hem player sayı kontrol�
 	return (0);
 }
 
-static int is_map_closed(t_map *map) // bu fonksiyon mapin kapalı olup olmadığını kontrol eder.
+static int is_map_closed(t_map *map, t_game *game) // bu fonksiyon mapin kapalı olup olmadığını kontrol eder.
 {
 	int open;
 
 	open = 0;
-	if (copy_grid(map) == -1)
+	if (copy_grid(map, game) == -1)
 		return (-1);
 	flood_fill(map, map->player_x, map->player_y, &open);
 	free_grid(map->copy_grid, map->height); // bu fonk yazılacak.
@@ -97,7 +97,7 @@ int validate_map(t_map *map, t_game *game) // bu fonksiyon mapin doğru olup olm
 		exit_check("invalid player count", 1, -1, game);
 	if (check_zero_boundaries(map) == -1)
 		exit_check("zero num error!", 1, -1, game);
-	if (is_map_closed(map) == -1)
+	if (is_map_closed(map, game) == -1)
 		exit_check("map is not closed!", 1, -1, game);
 	return (0);
 }
