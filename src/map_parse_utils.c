@@ -6,7 +6,7 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:15 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/19 00:23:11 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/19 03:40:05 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,22 @@ int check_file_extension(char *file_path)
     return (0);
 }
 
-int copy_grid(t_map *map, t_game *game) // bu fonksiyon flood fill için yeni bir map kopyası oluşturur.
+int copy_grid(t_map *map,t_game *game) // bu fonksiyon flood fill için yeni bir map kopyası oluşturur.
 {
     int i;
 
     i = 0;
     map->copy_grid = malloc(sizeof(char *) * map->height);
     if (!map->copy_grid)
-        exit_check("memory allocation failed", 1, -1, game); //burayı düzenledim
+        exit_check("malloc failed", 1, -1, game);
     while (i < map->height)
     {
         map->copy_grid[i] = ft_strdup(map->grid[i]);
         if (!map->copy_grid[i])
-            exit_check("string duplicate failed", 1, -1, game); //burayı düzenledim
-            
+        {
+            exit_check("string duplicate failed", 1, -1, game);
+            return (-1);
+        }
         i++;
     }
     return (0);
