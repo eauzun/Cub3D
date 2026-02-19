@@ -6,7 +6,7 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/19 04:13:48 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/19 17:56:20 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,77 +29,6 @@ void	remove_newline(char *line)
 	}
 }
 
-// static int	count_lines(char *file_path)
-// {
-// 	int		fd;
-// 	int		lines;
-// 	char	*line;
-
-// 	lines = 0;
-// 	fd = open(file_path, O_RDONLY);
-// 	if (fd == -1)
-// 		return (-1);
-// 	line = get_next_line(fd);
-// 	while (line)
-// 	{
-// 		lines++;
-// 		free(line);
-// 		line = get_next_line(fd);
-// 	}
-// 	close(fd);
-// 	return (lines);
-// }
-
-// static int	read_map_lines(int fd, t_map *map)
-// {
-// 	int		i;
-// 	char	*line;
-
-// 	i = 0;
-// 	line = get_next_line(fd);
-// 	while (line)
-// 	{
-// 		remove_newline(line);
-// 		map->grid[i] = line;
-// 		i++;
-// 		line = get_next_line(fd);
-// 	}
-// 	map->grid[i] = NULL;
-// 	map->width = find_max_width(map); //padding buna göre yapılıcak.
-// 	if (validate_map(map) == -1) // yeni eklendi
-// 		return (-1);
-// 	return (0);
-// }
-
-// int	map_parse(char *file_path, t_map *map)
-// {
-// 	int	fd;
-
-// 	if (check_file_extension(file_path) == -1)
-// 		return (-1);
-// 	map->height = count_lines(file_path);
-// 	if (map->height <= 0)
-// 		return (-1);
-// 	map->grid = malloc(sizeof(char *) * (map->height + 1));
-// 	if (!map->grid)
-// 		return (-1);
-// 	fd = open(file_path, O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		free(map->grid);
-// 		return (-1);
-// 	}
-// 	if (read_map_lines(fd, map) == -1)
-// 	{
-// 		free(map->grid);
-// 		close(fd);
-// 		return (-1);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
-
-//header de olduğu için bölerken sorun çıkmıştı. dynamic array kullandım
 int	is_empty_line(char *line)
 {
 	int	i;
@@ -138,8 +67,9 @@ static void	read_headers(int fd, t_game *game, char **first_map_line)
 		free(line);
 		line = get_next_line(fd);
 	}
+	check_headers_exist(game);
 }
-//dynamic array kullandım. exponantial growth ile okudukça realloc tarzı büyütüyor.
+
 static void	read_map_lines(int fd, t_game *game, char *first)
 {
 	char	*line;
@@ -188,4 +118,5 @@ int	map_parse(char *file_path, t_game *game)
 	validate_map(&game->map, game);
 	return (0);
 }
+
 

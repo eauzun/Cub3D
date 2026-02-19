@@ -12,7 +12,7 @@
 
 #include "../includes/cub3d.h"
 
-//return -1 olan her yerde geçmişteki şeyleri freelemeyi unutma!
+//return -1 olan her yerde geçmişteki şeyleri freelemeyi unutma!mak
 
 int	main(int argc, char **argv)
 {
