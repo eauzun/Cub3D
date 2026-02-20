@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 01:13:01 by emuzun            #+#    #+#             */
-/*   Updated: 2026/02/19 04:10:44 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/20 22:39:15 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,30 @@ void	check_headers_exist(t_game *game)
 		exit_check("undefined ceiling color", 1, -1, game);
 }
 
+int check_num_of_commas(char *str) //virgül parse kontrol
+{
+	int i;
+	int num;
+
+	num = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ',')
+			num++;
+		i++;
+	}
+	return (num);
+}
+
 static void	parse_color(char *str, t_color *color, t_game *game)
 {
 	char	**parts;
 	int		vals[3];
 	int		i;
 
+	if (check_num_of_commas(str) > 2) // virgül parse kontrolü
+		exit_check("color: parse failed", 1, -1, game);
 	parts = ft_split(str, ',');
 	if (!parts)
 		exit_check("color: parse failed", 1, -1, game);
