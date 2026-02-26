@@ -6,6 +6,7 @@
 # include <fcntl.h>
 # include "get_next_line.h"
 # include "libft.h"
+# include "../src/mlx_functions/render.h"
 
 typedef struct s_color
 {

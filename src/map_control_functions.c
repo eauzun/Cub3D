@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_control_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/19 03:57:41 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/20 22:42:12 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int padding_map(t_map *map) // bu fonksiyon bölünecek. tüm satır uzunluklar�
 	int x;
 	int len;
 	
-	pad_map = malloc(sizeof(char *) * map->height);
+	pad_map = malloc(sizeof(char *) * (map->height + 1)); // +1 ekleyip null koydum sona - ece
 	if (!pad_map)
 		return (-1);
 	y = 0;
@@ -41,6 +41,7 @@ int padding_map(t_map *map) // bu fonksiyon bölünecek. tüm satır uzunluklar�
 		pad_map[y][map->width] = '\0';
 		y++;
 	}
+	pad_map[map->height] = NULL; //yeni ekledim - ece
 	free_grid(map->grid, map->height);
 	map->grid = pad_map;
 	return (0);
