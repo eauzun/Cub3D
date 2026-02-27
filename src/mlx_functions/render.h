@@ -9,6 +9,7 @@
 #define WINDOW_HEIGHT 600
 
 typedef struct s_map t_map;
+
 typedef struct s_image
 {
 	void *mlx_img; //mlxin tuttuğu görüntü
@@ -32,7 +33,9 @@ typedef struct s_render
 
 int init_mlx_window(t_render *render);
 int init_render(t_render *render);
-
+int init_frame(t_render *render);
+int render_frame(t_render *render);
+void put_pixel_to_mem(t_image *img, int x, int y, int color);
 
 
 

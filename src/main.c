@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:07 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/27 01:09:33 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/27 13:42:09 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ int	main(void)
 		return (write(2, "Error\nmlx window init failed\n", 29), 1);
 
 	mlx_loop(r.mlx);
+	mlx_loop_hook(r.mlx, render_frame, &r);
 	return (0);
 }
