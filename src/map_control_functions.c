@@ -6,7 +6,7 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/20 22:42:12 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/28 02:19:26 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ static int validate_player(t_map *map) // bu fonksiyon hem player sayı kontrol�
 			{
 				map->player_x = x;
 				map->player_y = y;
+				map->player_look = map->grid[y][x];
 				map->player_num++;
 				map->grid[y][x] = '0'; //oyuncu bulunduğu kareden yürüyebilmeli, o yüzden değiştiriyorum.
 			}

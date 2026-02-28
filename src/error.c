@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:10 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/19 01:45:02 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/02/28 01:39:24 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 //3. argüman exit status
 int	exit_check(char *msg, int err, int status, t_game *game)
 {
+	(void)game;
 	int	fd;
 
 	if (!msg && !err && !status)
@@ -31,7 +32,7 @@ int	exit_check(char *msg, int err, int status, t_game *game)
 		ft_putendl_fd(msg, fd);
 	if (status == -1)
 	{
-		free_game(game);
+		//free_game(game);
 		exit(1);
 	}
 	return (status);

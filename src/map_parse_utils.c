@@ -6,12 +6,11 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:15 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/20 22:14:04 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/28 02:06:50 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
 
 int check_file_extension(char *file_path)
 {

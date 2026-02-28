@@ -6,53 +6,50 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:07 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/27 13:42:09 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/02/28 02:18:14 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <stdio.h>
 
-//return -1 olan her yerde geçmişteki şeyleri freelemeyi unutma!mak
-
-// int	main(int argc, char **argv)
-// {
-// 	t_game	game;
-// 	int		y;
-
-// 	if (argc != 2)
-// 	{
-// 		write(2, "Usage: ./cub3d <map_file>\n", 25);
-// 		return (1);
-// 	}
-// 	game = (t_game){0};
-// 	if (map_parse(argv[1], &game) == -1)
-// 	{
-// 		write(2, "Failed to parse map\n", 20);
-// 		return (1);
-// 	}
-// 	y = 0;
-// 	while (y < game.map.height)
-// 	{
-// 		write(1, game.map.grid[y], ft_strlen(game.map.grid[y]));
-// 		write(1, "\n", 1);
-// 		y++;
-// 	}
-// 	free_game(&game);
-// 	return (0);
-// }
-
-
-int	main(void)
+void	init_config(t_config *config)
 {
-	t_render	r;
+	config->no = NULL;
+	config->so = NULL;
+	config->we = NULL;
+	config->ea = NULL;
+	config->floor.is_set = 0;
+	config->ceiling.is_set = 0;
+}
 
-	r.mlx = NULL;
-	r.window = NULL;
+int	main(int argc, char **argv)
+{
+	t_game	game = {0};
 
-	if (!init_render(&r))
-		return (write(2, "Error\nmlx window init failed\n", 29), 1);
+	init_config(&game.config);
+	if (argc != 2)
+	{
+		write(2, "Usage: ./cub3d <map_file>\n", 25);
+		return (1);
+	}
+	t_render render = {0};
 
-	mlx_loop(r.mlx);
-	mlx_loop_hook(r.mlx, render_frame, &r);
+	// 1️⃣ Harita parse ediliyor
+	map_parse(argv[1], &game);
+
+	// 2️⃣ Render yapısına haritayı bağla  🔥 KRİTİK
+	render.map = &game.map;
+	render.config = &game.config;
+
+	// 3️⃣ Player init (map pointer hazır)
+	init_player(&render);
+	fprintf(stderr, "MAIN: after init_player, player=(%.2f,%.2f) dir=(%.2f,%.2f)\n", 
+		render.player.x, render.player.y, render.player.dir_x, render.player.dir_y);
+
+	// 4️⃣ MLX + frame + ilk render tek fonksiyonla başlat (loop_hook init_render içinde)
+	init_render(&render);
+
+	mlx_loop(render.mlx);
 	return (0);
 }

@@ -8,6 +8,8 @@
 # include "libft.h"
 # include "../src/mlx_functions/render.h"
 
+typedef struct s_render t_render;
+
 typedef struct s_color
 {
 	int	r;
@@ -38,11 +40,29 @@ typedef struct s_map
 	int		player_num;
 }	t_map;
 
+
 typedef struct s_game
 {
 	t_map		map;
 	t_config	config;
 }	t_game;
+
+typedef struct s_ray_dir
+{
+	double ray_dir_x;
+	double ray_dir_y;
+	int map_x;
+	int map_y;
+	double side_dist_x;
+	double side_dist_y;
+	double delta_dist_x;
+	double delta_dist_y;
+	int step_x;
+	int step_y;
+	int hit;
+	int side;
+}	t_ray_dir;
+
 
 int		map_parse(char *file_path, t_game *game);
 void	free_map(t_map *map);
@@ -62,5 +82,6 @@ int		is_empty_line(char *line);
 void	remove_newline(char *line);
 int		parse_header_line(char *line, t_game *game);
 void	check_headers_exist(t_game *game);
+void	init_player(t_render *render);
 
 #endif
