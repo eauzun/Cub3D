@@ -1,7 +1,8 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-MLX_FLAGS = -Lmlx -lmlx -framework OpenGL -framework AppKit
-INCLUDES = -I includes
+MLX_DIR = minilibx-linux
+MLX_FLAGS = -L$(MLX_DIR) -lmlx_Linux -lXext -lX11 -lm -lz
+INCLUDES = -I includes -I src/mlx_functions -I $(MLX_DIR)
 NAME = cub3d
 
 SRC = src/main.c src/parse_map.c src/parse_map2.c src/parse_header.c \
@@ -12,16 +13,24 @@ SRC = src/main.c src/parse_map.c src/parse_map2.c src/parse_header.c \
 
 LIBS = external/libft/libft.a
 
-all: $(NAME)
+all: mlx $(NAME)
 
-$(NAME):
-	$(CC) $(CFLAGS) $(SRC) external/libft/libft.a $(MLX_FLAGS) -I includes -o cub3d
+mlx:
+	@make -C $(MLX_DIR) 2>/dev/null || true
+
+$(LIBS):
+	@make -C external/libft
+
+$(NAME): $(LIBS)
+	$(CC) $(CFLAGS) $(SRC) $(LIBS) $(MLX_FLAGS) $(INCLUDES) -o $(NAME)
 
 clean:
 	@rm -f $(NAME)
+	@make -C external/libft clean 2>/dev/null || true
 
 fclean: clean
+	@make -C external/libft fclean 2>/dev/null || true
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re mlx

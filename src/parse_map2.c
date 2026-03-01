@@ -6,16 +6,15 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 03:22:13 by emuzun            #+#    #+#             */
-/*   Updated: 2026/02/19 03:31:04 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/01 00:00:00 by emuzun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 /*
-** Map basladiktan sonra kalan satirlari okur.
-** Bos olmayan herhangi bir satir gelirse "content after map" hatasiyla cikis yapar.
-** Dosya burada biterse gecerlidir.
+** Map başladıktan sonra kalan satırları okur.
+** Boş olmayan herhangi bir satır gelirse "content after map" hatasıyla çıkış.
 */
 void	check_after_map(int fd, t_game *game)
 {
@@ -24,17 +23,23 @@ void	check_after_map(int fd, t_game *game)
 	line = get_next_line(fd);
 	while (line)
 	{
+		game->current_line = line;
 		remove_newline(line);
 		if (!is_empty_line(line))
 		{
+			game->current_line = NULL;
 			free(line);
+			close(fd);
+			get_next_line(-1);
 			exit_check("content after map is invalid", 1, -1, game);
 		}
 		free(line);
+		game->current_line = NULL;
 		line = get_next_line(fd);
 	}
+	close(fd);
+	get_next_line(-1);
 }
-
 
 void	append_line(t_map *map, char *line, int *cap, t_game *game)
 {
@@ -71,4 +76,3 @@ int	find_max_width(t_map *map)
 	}
 	return (max);
 }
-

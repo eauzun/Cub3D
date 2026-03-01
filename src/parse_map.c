@@ -6,12 +6,11 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/19 17:56:20 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/01 00:00:00 by emuzun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
 
 void	remove_newline(char *line)
 {
@@ -23,7 +22,7 @@ void	remove_newline(char *line)
 		if (line[i] == '\n')
 		{
 			line[i] = '\0';
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -43,6 +42,36 @@ int	is_empty_line(char *line)
 	return (1);
 }
 
+/*
+** Tüm kaynakları temizleyip çıkış yapar.
+** fd >= 0 ise kapatır. GNL static ve current_line temizlenir.
+** exit_check zaten free_game çağırır; current_line önceden temizleniyor
+** çünkü exit_check → free_game sırasına güvenmek yerine burada garantiliyoruz.
+*/
+void	parse_error(int fd, t_game *game, char *msg)
+{
+	if (fd >= 0)
+		close(fd);
+	get_next_line(-1);
+	if (game && game->current_line)
+	{
+		free(game->current_line);
+		game->current_line = NULL;
+	}
+	exit_check(msg, 1, -1, game);
+}
+
+static void	validate_headers(int fd, t_game *game)
+{
+	if (!game->config.no || !game->config.so
+		|| !game->config.we || !game->config.ea)
+		parse_error(fd, game, "undefined texture identifier");
+	if (!game->config.floor.is_set)
+		parse_error(fd, game, "undefined floor color");
+	if (!game->config.ceiling.is_set)
+		parse_error(fd, game, "undefined ceiling color");
+}
+
 static void	read_headers(int fd, t_game *game, char **first_map_line)
 {
 	char	*line;
@@ -51,23 +80,27 @@ static void	read_headers(int fd, t_game *game, char **first_map_line)
 	line = get_next_line(fd);
 	while (line)
 	{
+		game->current_line = line;
 		remove_newline(line);
 		if (is_empty_line(line))
 		{
 			free(line);
+			game->current_line = NULL;
 			line = get_next_line(fd);
 			continue ;
 		}
 		if (parse_header_line(line, game) == -1)
 		{
-			check_headers_exist(game);
+			validate_headers(fd, game);
+			game->current_line = NULL;
 			*first_map_line = line;
 			return ;
 		}
 		free(line);
+		game->current_line = NULL;
 		line = get_next_line(fd);
 	}
-	check_headers_exist(game);
+	validate_headers(fd, game);
 }
 
 static void	read_map_lines(int fd, t_game *game, char *first)
@@ -78,24 +111,30 @@ static void	read_map_lines(int fd, t_game *game, char *first)
 	cap = 16;
 	game->map.grid = malloc(sizeof(char *) * cap);
 	if (!game->map.grid)
-		exit_check("memory allocation failed", 1, -1, game);
+		parse_error(fd, game, "memory allocation failed");
 	game->map.height = 0;
 	append_line(&game->map, first, &cap, game);
 	line = get_next_line(fd);
 	while (line)
 	{
+		game->current_line = line;
 		remove_newline(line);
 		if (is_empty_line(line))
 		{
 			free(line);
+			game->current_line = NULL;
 			check_after_map(fd, game);
 			return ;
 		}
+		game->current_line = NULL;
 		append_line(&game->map, line, &cap, game);
 		line = get_next_line(fd);
 	}
+	close(fd);
+	get_next_line(-1);
 	game->map.grid[game->map.height] = NULL;
 }
+
 int	map_parse(char *file_path, t_game *game)
 {
 	int		fd;
@@ -108,9 +147,8 @@ int	map_parse(char *file_path, t_game *game)
 		exit_check("cannot open map file", 1, -1, game);
 	read_headers(fd, game, &first);
 	if (!first)
-		exit_check("no map found in file", 1, -1, game);
+		parse_error(fd, game, "no map found in file");
 	read_map_lines(fd, game, first);
-	close(fd);
 	if (game->map.height == 0)
 		exit_check("map is empty", 1, -1, game);
 	game->map.grid[game->map.height] = NULL;
@@ -118,5 +156,3 @@ int	map_parse(char *file_path, t_game *game)
 	validate_map(&game->map, game);
 	return (0);
 }
-
-

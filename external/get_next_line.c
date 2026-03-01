@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:58:32 by emuzun            #+#    #+#             */
-/*   Updated: 2025/01/22 00:03:03 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/02 01:25:30 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,15 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*all_line;
 
+	if (fd == -1)
+	{
+		if (all_line)
+		{
+			free(all_line);
+			all_line = NULL;
+		}
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!all_line)
@@ -107,5 +116,10 @@ char	*get_next_line(int fd)
 		return (0);
 	line = till_nl(all_line);
 	all_line = return_rest(all_line);
+	if (!line && all_line)
+	{
+		free(all_line);
+		all_line = NULL;
+	}
 	return (line);
 }
