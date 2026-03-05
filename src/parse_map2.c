@@ -12,10 +12,7 @@
 
 #include "../includes/cub3d.h"
 
-/*
-** Map başladıktan sonra kalan satırları okur.
-** Boş olmayan herhangi bir satır gelirse "content after map" hatasıyla çıkış.
-*/
+/* Map bittikten sonra kalan satırları okur; boş olmayan satır gelirse hata mesajıyla çıkar. */
 void	check_after_map(int fd, t_game *game)
 {
 	char	*line;
@@ -41,6 +38,7 @@ void	check_after_map(int fd, t_game *game)
 	get_next_line(-1);
 }
 
+/* Yeni satırı map grid'ine ekler; gerekirse grid kapasitesini ikiye katlar. */
 void	append_line(t_map *map, char *line, int *cap, t_game *game)
 {
 	char	**tmp;
@@ -59,6 +57,7 @@ void	append_line(t_map *map, char *line, int *cap, t_game *game)
 	map->height++;
 }
 
+/* Map'teki en uzun satırın karakter sayısını (genişlik) döndürür. */
 int	find_max_width(t_map *map)
 {
 	int	i;

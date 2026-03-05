@@ -12,6 +12,7 @@
 
 #include "../includes/cub3d.h"
 
+/* Config yapısındaki texture ve renk alanlarını varsayılan (boş) değerlere sıfırlar. */
 static void	init_config(t_config *config)
 {
 	config->no = NULL;
@@ -22,6 +23,7 @@ static void	init_config(t_config *config)
 	config->ceiling.is_set = 0;
 }
 
+/* Program giriş noktası: argüman kontrolü, map parse, oyuncu ve MLX başlatma, döngü. */
 int	main(int argc, char **argv)
 {
 	t_game		game;

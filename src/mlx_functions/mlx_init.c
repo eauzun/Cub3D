@@ -20,20 +20,23 @@ static int	on_close(t_render *render);
 
 /* ─── movement helpers ────────────────────────────────────────────────────── */
 
+/* Verilen (x,y) map hücresindeki karakteri döndürür; sınır dışı veya geçersiz indeks için ' ' döner. */
 static char	get_cell(t_map *map, double x, double y)
 {
-	int	ix;
-	int	iy;
+	int	map_x_index;
+	int	map_y_index;
 
-	ix = (int)x;
-	iy = (int)y;
-	if (iy < 0 || iy >= map->height || ix < 0 || ix >= map->width)
+	map_x_index = (int)x;
+	map_y_index = (int)y;
+	if (map_y_index < 0 || map_y_index >= map->height
+		|| map_x_index < 0 || map_x_index >= map->width)
 		return (' ');
-	if (ix >= (int)ft_strlen(map->grid[iy]))
+	if (map_x_index >= (int)ft_strlen(map->grid[map_y_index]))
 		return (' ');
-	return (map->grid[iy][ix]);
+	return (map->grid[map_y_index][map_x_index]);
 }
 
+/* Oyuncuyu (nx,ny) konumuna taşımaya çalışır; duvar veya boşluk varsa taşımaz. */
 static void	try_move(t_render *render, double nx, double ny)
 {
 	if (get_cell(render->map, nx, render->player.y) != '1'
@@ -48,26 +51,31 @@ static void	try_move(t_render *render, double nx, double ny)
 
 /* ─── rotation ────────────────────────────────────────────────────────────── */
 
+/* Oyuncu yön ve kamera düzlemini verilen açı kadar (radyan) döndürür. */
 static void	rotate_player(t_render *render, double angle)
 {
 	double	old_dir_x;
 	double	old_plane_x;
-	double	c;
-	double	s;
+	double	cos_value;
+	double	sin_value;
 
-	c = cos(angle);
-	s = sin(angle);
+	cos_value = cos(angle);
+	sin_value = sin(angle);
 	old_dir_x = render->player.dir_x;
-	render->player.dir_x = render->player.dir_x * c - render->player.dir_y * s;
-	render->player.dir_y = old_dir_x * s + render->player.dir_y * c;
+	render->player.dir_x = render->player.dir_x * cos_value
+		- render->player.dir_y * sin_value;
+	render->player.dir_y = old_dir_x * sin_value
+		+ render->player.dir_y * cos_value;
 	old_plane_x = render->player.plane_x;
-	render->player.plane_x = render->player.plane_x * c
-		- render->player.plane_y * s;
-	render->player.plane_y = old_plane_x * s + render->player.plane_y * c;
+	render->player.plane_x = render->player.plane_x * cos_value
+		- render->player.plane_y * sin_value;
+	render->player.plane_y = old_plane_x * sin_value
+		+ render->player.plane_y * cos_value;
 }
 
 /* ─── key hooks ───────────────────────────────────────────────────────────── */
 
+/* Tuş basıldığında çağrılır: ESC ile kapatma, W/A/S/D ve oklar için bayrakları 1 yapar. */
 static int	key_press(int key, t_render *render)
 {
 	if (key == KEY_ESC)
@@ -87,6 +95,7 @@ static int	key_press(int key, t_render *render)
 	return (0);
 }
 
+/* Tuş bırakıldığında çağrılır: ilgili hareket/dönüş bayrağını 0 yapar. */
 static int	key_release(int key, t_render *render)
 {
 	if (key == KEY_W)
@@ -106,6 +115,7 @@ static int	key_release(int key, t_render *render)
 
 /* ─── window / close ──────────────────────────────────────────────────────── */
 
+/* Pencere kapatıldığında veya ESC'de: render ve game kaynaklarını serbest bırakıp programı sonlandırır. */
 static int	on_close(t_render *render)
 {
 	t_game	*game;
@@ -117,6 +127,7 @@ static int	on_close(t_render *render)
 	return (0);
 }
 
+/* MLX bağlamı ve pencere oluşturur; başarısızsa hata mesajıyla 1 döner. */
 int	init_mlx_window(t_render *render)
 {
 	render->mlx = mlx_init();
@@ -136,57 +147,78 @@ int	init_mlx_window(t_render *render)
 
 /* ─── game loop ───────────────────────────────────────────────────────────── */
 
-#define MOVE_SPEED_PER_SEC 2.0
-#define ROT_SPEED_PER_SEC  2.0
-
+/* Sistem zamanını saniye cinsinden (ondalıklı) döndürür. */
 static double	get_time_sec(void)
 {
-	struct timeval	tv;
+	struct timeval	time_value;
 
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec + tv.tv_usec / 1000000.0);
+	gettimeofday(&time_value, NULL);
+	return (time_value.tv_sec + time_value.tv_usec / 1000000.0);
 }
 
-static int	game_loop(t_render *render)
+/* Zaman farkını hesaplar ve frame süresini mantıklı bir aralıkta tutar. */
+static double	update_delta_time(t_render *render)
 {
 	double	now;
-	double	dt;
-	double	ms;
-	double	ra;
+	double	delta_time;
 
 	now = get_time_sec();
-	dt = now - render->last_frame_time;
+	delta_time = now - render->last_frame_time;
 	render->last_frame_time = now;
-	if (dt <= 0.0 || dt > 0.1)
-		dt = 0.016;
-	ms = MOVE_SPEED_PER_SEC * dt;
-	ra = ROT_SPEED_PER_SEC * dt;
+	if (delta_time <= 0.0 || delta_time > 0.1)
+		delta_time = 0.016;
+	return (delta_time);
+}
+
+/* Basılı hareket tuşlarına göre oyuncunun konumunu günceller. */
+static void	handle_movement(t_render *render, double move_distance)
+{
 	if (render->key_w)
 		try_move(render,
-			render->player.x + render->player.dir_x * ms,
-			render->player.y + render->player.dir_y * ms);
+			render->player.x + render->player.dir_x * move_distance,
+			render->player.y + render->player.dir_y * move_distance);
 	if (render->key_s)
 		try_move(render,
-			render->player.x - render->player.dir_x * ms,
-			render->player.y - render->player.dir_y * ms);
+			render->player.x - render->player.dir_x * move_distance,
+			render->player.y - render->player.dir_y * move_distance);
 	if (render->key_a)
 		try_move(render,
-			render->player.x - render->player.plane_x * ms,
-			render->player.y - render->player.plane_y * ms);
+			render->player.x - render->player.plane_x * move_distance,
+			render->player.y - render->player.plane_y * move_distance);
 	if (render->key_d)
 		try_move(render,
-			render->player.x + render->player.plane_x * ms,
-			render->player.y + render->player.plane_y * ms);
+			render->player.x + render->player.plane_x * move_distance,
+			render->player.y + render->player.plane_y * move_distance);
+}
+
+/* Basılı dönüş tuşlarına göre oyuncunun yönünü günceller. */
+static void	handle_rotation(t_render *render, double rotation_angle)
+{
 	if (render->key_left)
-		rotate_player(render, -ra);
+		rotate_player(render, -rotation_angle);
 	if (render->key_right)
-		rotate_player(render, ra);
+		rotate_player(render, rotation_angle);
+}
+
+/* Her frame'de çağrılır: delta time, hareket, dönüş ve bir frame çizimi yapar. */
+static int	game_loop(t_render *render)
+{
+	double	delta_time;
+	double	move_distance;
+	double	rotation_angle;
+
+	delta_time = update_delta_time(render);
+	move_distance = MOVE_SPEED_PER_SEC * delta_time;
+	rotation_angle = ROT_SPEED_PER_SEC * delta_time;
+	handle_movement(render, move_distance);
+	handle_rotation(render, rotation_angle);
 	render_frame(render);
 	return (0);
 }
 
 /* ─── pixel helper ────────────────────────────────────────────────────────── */
 
+/* Görsel belleğinde (x,y) konumuna verilen rengi yazar; sınır dışıysa hiçbir şey yapmaz. */
 void	put_pixel_to_mem(t_image *img, int x, int y, int color)
 {
 	char	*dest;
@@ -200,6 +232,7 @@ void	put_pixel_to_mem(t_image *img, int x, int y, int color)
 
 /* ─── frame init ──────────────────────────────────────────────────────────── */
 
+/* Pencere boyutunda bir MLX görseli oluşturup render->frame alanlarına bağlar. */
 int	init_frame(t_render *render)
 {
 	render->frame.mlx_img = mlx_new_image(render->mlx,
@@ -223,6 +256,7 @@ int	init_frame(t_render *render)
 
 /* ─── ray helpers ─────────────────────────────────────────────────────────── */
 
+/* Ekran kolonu x için ışın yönü ve başlangıç map hücresini hesaplar. */
 int	init_ray_direction(t_ray_dir *ray, t_render *render, int x)
 {
 	double	camera_x;
@@ -238,16 +272,28 @@ int	init_ray_direction(t_ray_dir *ray, t_render *render, int x)
 	return (0);
 }
 
+/* Işın yönüne göre delta mesafe ve adım (step_x, step_y) değerlerini hesaplar. */
 void	calculate_delta_and_step(t_ray_dir *ray)
 {
-	ray->delta_dist_x = (ray->ray_dir_x == 0) ? 1e30
-		: fabs(1 / ray->ray_dir_x);
-	ray->delta_dist_y = (ray->ray_dir_y == 0) ? 1e30
-		: fabs(1 / ray->ray_dir_y);
-	ray->step_x = (ray->ray_dir_x < 0) ? -1 : 1;
-	ray->step_y = (ray->ray_dir_y < 0) ? -1 : 1;
+	if (ray->ray_dir_x == 0)
+		ray->delta_dist_x = 1e30;
+	else
+		ray->delta_dist_x = fabs(1 / ray->ray_dir_x);
+	if (ray->ray_dir_y == 0)
+		ray->delta_dist_y = 1e30;
+	else
+		ray->delta_dist_y = fabs(1 / ray->ray_dir_y);
+	if (ray->ray_dir_x < 0)
+		ray->step_x = -1;
+	else
+		ray->step_x = 1;
+	if (ray->ray_dir_y < 0)
+		ray->step_y = -1;
+	else
+		ray->step_y = 1;
 }
 
+/* Işının ilk yatay/dikey grid çizgisine kadar olan yan mesafelerini hesaplar. */
 void	calculate_side_distance(t_ray_dir *ray, t_render *render)
 {
 	if (ray->ray_dir_x < 0)
@@ -264,6 +310,7 @@ void	calculate_side_distance(t_ray_dir *ray, t_render *render)
 			* ray->delta_dist_y;
 }
 
+/* DDA ile ışını ilerleterek duvara (veya harita sınırına) çarpana kadar map üzerinde adımlar. */
 void	dda_algorithm(t_ray_dir *ray, t_render *render)
 {
 	while (ray->hit == 0)
@@ -291,6 +338,8 @@ void	dda_algorithm(t_ray_dir *ray, t_render *render)
 	}
 }
 
+/* Oyuncudan duvara olan dik (perpendicular) uzaklığı döndürür.
+ * Fish-eye etkisini önlemek için ışın uzunluğu yerine bu değer kullanılır. */
 double	calculate_wall_distance(t_ray_dir *ray, t_render *render)
 {
 	if (ray->side == 0)
@@ -302,9 +351,11 @@ double	calculate_wall_distance(t_ray_dir *ray, t_render *render)
 
 /* ─── render frame ────────────────────────────────────────────────────────── */
 
-static void	draw_ceiling_floor(t_render *render, int x, int ds, int de)
+/* Tek kolonda tavan ve zemin bölümlerini config renklerine göre çizer. */
+static void	draw_ceiling_floor(t_render *render, int screen_x,
+		int draw_start, int draw_end)
 {
-	int	y;
+	int	pixel_y;
 	int	ceiling_rgb;
 	int	floor_rgb;
 
@@ -314,87 +365,141 @@ static void	draw_ceiling_floor(t_render *render, int x, int ds, int de)
 	floor_rgb = (render->config->floor.r << 16)
 		| (render->config->floor.g << 8)
 		| render->config->floor.b;
-	y = 0;
-	while (y < ds)
-		put_pixel_to_mem(&render->frame, x, y++, ceiling_rgb);
-	y = de + 1;
-	while (y < render->frame.height)
-		put_pixel_to_mem(&render->frame, x, y++, floor_rgb);
+	pixel_y = 0;
+	while (pixel_y < draw_start)
+		put_pixel_to_mem(&render->frame, screen_x, pixel_y++, ceiling_rgb);
+	pixel_y = draw_end + 1;
+	while (pixel_y < render->frame.height)
+		put_pixel_to_mem(&render->frame, screen_x, pixel_y++, floor_rgb);
 }
 
-static void	draw_wall_column(t_render *render, t_ray_dir *ray,
-		int x, double perp_dist)
+/* Duvar kolonunun ekrandaki yüksekliğini ve başlangıç/bitiş satırlarını hesaplar. */
+static void	init_wall_line(double perp_dist, t_render *render,
+		t_wall_column *wall_column)
 {
-	int				line_height;
-	int				draw_start;
-	int				draw_end;
-	int				tex_num;
-	double			wall_x;
-	int				tex_x;
-	double			step;
-	double			tex_pos;
-	t_image			*tex;
-	int				y;
-	unsigned int	color;
+	wall_column->line_height = (int)(render->frame.height / perp_dist);
+	wall_column->draw_start = -wall_column->line_height / 2
+		+ render->frame.height / 2;
+	wall_column->draw_end = wall_column->line_height / 2
+		+ render->frame.height / 2;
+	if (wall_column->draw_start < 0)
+		wall_column->draw_start = 0;
+	if (wall_column->draw_end >= render->frame.height)
+		wall_column->draw_end = render->frame.height - 1;
+}
 
-	line_height = (int)(render->frame.height / perp_dist);
-	draw_start = (-line_height / 2 + render->frame.height / 2);
-	draw_end = (line_height / 2 + render->frame.height / 2);
-	if (draw_start < 0)
-		draw_start = 0;
-	if (draw_end >= render->frame.height)
-		draw_end = render->frame.height - 1;
+/* Işının tarafına ve yönüne göre kullanılacak texture indeksini seçer. */
+static void	select_texture_index(t_ray_dir *ray, t_wall_column *wall_column)
+{
 	if (ray->side == 0)
-		tex_num = (ray->ray_dir_x > 0) ? 2 : 3;
+	{
+		if (ray->ray_dir_x > 0)
+			wall_column->texture_index = 2;
+		else
+			wall_column->texture_index = 3;
+	}
 	else
-		tex_num = (ray->ray_dir_y > 0) ? 0 : 1;
+	{
+		if (ray->ray_dir_y > 0)
+			wall_column->texture_index = 0;
+		else
+			wall_column->texture_index = 1;
+	}
+}
+
+/* Oyuncu konumu ve ışın yönüne göre duvarın vurulduğu x konumunu hesaplar. */
+static double	calculate_wall_x(t_render *render, t_ray_dir *ray,
+		double perp_dist)
+{
+	double	wall_x;
+
 	if (ray->side == 0)
 		wall_x = render->player.y + perp_dist * ray->ray_dir_y;
 	else
 		wall_x = render->player.x + perp_dist * ray->ray_dir_x;
 	wall_x -= floor(wall_x);
-	tex = &render->images[tex_num];
-	tex_x = (int)(wall_x * (double)tex->width);
+	return (wall_x);
+}
+
+/* Texture koordinatlarını (sütun, adım ve başlangıç ofseti) hesaplar. */
+static void	init_texture_coords(t_render *render, t_ray_dir *ray,
+		t_wall_column *wall_column)
+{
+	t_image	*texture;
+
+	texture = &render->images[wall_column->texture_index];
+	wall_column->texture_x = (int)(wall_column->wall_x
+			* (double)texture->width);
 	if (ray->side == 0 && ray->ray_dir_x > 0)
-		tex_x = tex->width - tex_x - 1;
+		wall_column->texture_x = texture->width - wall_column->texture_x - 1;
 	if (ray->side == 1 && ray->ray_dir_y < 0)
-		tex_x = tex->width - tex_x - 1;
-	step = 1.0 * tex->height / line_height;
-	tex_pos = (draw_start - render->frame.height / 2.0
-			+ line_height / 2.0) * step;
-	draw_ceiling_floor(render, x, draw_start, draw_end);
-	y = draw_start;
-	while (y <= draw_end)
+		wall_column->texture_x = texture->width - wall_column->texture_x - 1;
+	wall_column->step = 1.0 * texture->height / wall_column->line_height;
+	wall_column->texture_position = (wall_column->draw_start
+			- render->frame.height / 2.0
+			+ wall_column->line_height / 2.0) * wall_column->step;
+}
+
+/* Tek bir duvar kolonunu texture'tan örnekleyerek ekrana çizer. */
+static void	draw_textured_column(t_render *render, int screen_x,
+		t_wall_column *wall_column)
+{
+	int				pixel_y;
+	t_image			*texture;
+	unsigned int	color;
+
+	texture = &render->images[wall_column->texture_index];
+	pixel_y = wall_column->draw_start;
+	while (pixel_y <= wall_column->draw_end)
 	{
-		color = *(unsigned int *)(tex->mlx_addr
-				+ ((int)tex_pos & (tex->height - 1)) * tex->mlx_line_length
-				+ tex_x * (tex->mlx_bits_per_pixel / 8));
-		tex_pos += step;
-		put_pixel_to_mem(&render->frame, x, y, color);
-		y++;
+		color = *(unsigned int *)(texture->mlx_addr
+				+ ((int)wall_column->texture_position & (texture->height - 1))
+				* texture->mlx_line_length
+				+ wall_column->texture_x
+				* (texture->mlx_bits_per_pixel / 8));
+		wall_column->texture_position += wall_column->step;
+		put_pixel_to_mem(&render->frame, screen_x, pixel_y, color);
+		pixel_y++;
 	}
 }
 
+/* Tek ekran kolonu için duvar çizimini koordine eder: boyut, texture seçimi, tavan/zemin ve texture kolonu. */
+static void	draw_wall_column(t_render *render, t_ray_dir *ray,
+		int screen_x, double perp_dist)
+{
+	t_wall_column	wall_column;
+
+	init_wall_line(perp_dist, render, &wall_column);
+	select_texture_index(ray, &wall_column);
+	wall_column.wall_x = calculate_wall_x(render, ray, perp_dist);
+	init_texture_coords(render, ray, &wall_column);
+	draw_ceiling_floor(render, screen_x,
+		wall_column.draw_start, wall_column.draw_end);
+	draw_textured_column(render, screen_x, &wall_column);
+}
+
+/* Tüm ekran kolonları için ışın atıp duvarları çizer ve görseli pencereye kopyalar. */
 int	render_frame(t_render *render)
 {
-	int			x;
+	int			screen_x;
 	t_ray_dir	ray;
+	/* perp_dist: oyuncudan duvara dik uzaklık; duvar yüksekliği buna göre hesaplanır. */
 	double		perp_dist;
 
 	if (!render->frame.mlx_addr)
 		return (0);
-	x = 0;
-	while (x < render->frame.width)
+	screen_x = 0;
+	while (screen_x < render->frame.width)
 	{
-		init_ray_direction(&ray, render, x);
+		init_ray_direction(&ray, render, screen_x);
 		calculate_delta_and_step(&ray);
 		calculate_side_distance(&ray, render);
 		dda_algorithm(&ray, render);
 		perp_dist = calculate_wall_distance(&ray, render);
 		if (perp_dist <= 0)
 			perp_dist = 1e-6;
-		draw_wall_column(render, &ray, x, perp_dist);
-		x++;
+		draw_wall_column(render, &ray, screen_x, perp_dist);
+		screen_x++;
 	}
 	mlx_put_image_to_window(render->mlx, render->window,
 		render->frame.mlx_img, 0, 0);
@@ -403,47 +508,70 @@ int	render_frame(t_render *render)
 
 /* ─── texture loader ──────────────────────────────────────────────────────── */
 
+/* Texture dosya yollarını config'ten alıp diziye yerleştirir. */
+static void	init_texture_paths(t_render *render, char *texture_paths[4])
+{
+	texture_paths[0] = render->config->no;
+	texture_paths[1] = render->config->so;
+	texture_paths[2] = render->config->we;
+	texture_paths[3] = render->config->ea;
+}
+
+/* Bir texture yolu boşsa, kaynakları serbest bırakır ve hata ile çıkar. */
+static void	validate_texture_path(t_render *render, char *texture_path)
+{
+	if (!texture_path)
+	{
+		free_render(render);
+		free_game(render->game);
+		exit_check("texture: missing path", 1, -1, NULL);
+	}
+}
+
+/* Tek bir XPM texture dosyasını yükler ve ilgili t_image alanlarını doldurur. */
+static void	load_single_texture(t_render *render, t_image *image,
+		char *texture_path)
+{
+	int	texture_width;
+	int	texture_height;
+
+	image->mlx_img = mlx_xpm_file_to_image(render->mlx,
+			texture_path, &texture_width, &texture_height);
+	if (!image->mlx_img)
+	{
+		free_render(render);
+		free_game(render->game);
+		exit_check("texture: failed to load XPM", 1, -1, NULL);
+	}
+	image->mlx_addr = mlx_get_data_addr(
+			image->mlx_img,
+			&image->mlx_bits_per_pixel,
+			&image->mlx_line_length,
+			&image->mlx_endian);
+	image->width = texture_width;
+	image->height = texture_height;
+}
+
+/* Dört duvar texture'ını config path'lerinden yükleyip render->images dizisine yazar. */
 static void	load_textures(t_render *render)
 {
-	char	*paths[4];
-	int		w;
-	int		h;
-	int		i;
+	char	*texture_paths[4];
+	int		index;
 
-	paths[0] = render->config->no;
-	paths[1] = render->config->so;
-	paths[2] = render->config->we;
-	paths[3] = render->config->ea;
-	i = 0;
-	while (i < 4)
+	init_texture_paths(render, texture_paths);
+	index = 0;
+	while (index < 4)
 	{
-		if (!paths[i])
-		{
-			free_render(render);
-			free_game(render->game);
-			exit_check("texture: missing path", 1, -1, NULL);
-		}
-		render->images[i].mlx_img = mlx_xpm_file_to_image(render->mlx,
-				paths[i], &w, &h);
-		if (!render->images[i].mlx_img)
-		{
-			free_render(render);
-			free_game(render->game);
-			exit_check("texture: failed to load XPM", 1, -1, NULL);
-		}
-		render->images[i].mlx_addr = mlx_get_data_addr(
-				render->images[i].mlx_img,
-				&render->images[i].mlx_bits_per_pixel,
-				&render->images[i].mlx_line_length,
-				&render->images[i].mlx_endian);
-		render->images[i].width = w;
-		render->images[i].height = h;
-		i++;
+		validate_texture_path(render, texture_paths[index]);
+		load_single_texture(render, &render->images[index],
+			texture_paths[index]);
+		index++;
 	}
 }
 
 /* ─── init render ─────────────────────────────────────────────────────────── */
 
+/* Tuş bayraklarını, MLX penceresini, frame'i ve hook'ları ayarlar; texture'ları yükleyip ilk frame'i çizer. */
 int	init_render(t_render *render)
 {
 	render->key_w = 0;

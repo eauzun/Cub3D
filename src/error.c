@@ -12,15 +12,7 @@
 
 #include "../includes/cub3d.h"
 
-/*
-** exit_check:
-**   msg    - yazılacak mesaj (NULL olabilir)
-**   err    - 1 ise stderr'e "Error\n" prefix'i eklenir
-**   status - (-1) ise free_game yapıp exit(1) çağırır
-**            (0)  ise sadece 0 döner
-**            diğer değerlerde o değeri döner
-**   game   - free edilecek yapı (NULL geçilebilir)
-*/
+/* Hata mesajı yazar; err=1 ise "Error\n" ekler; status=-1 ise free_game ile exit(1), aksi halde status döner. */
 int	exit_check(char *msg, int err, int status, t_game *game)
 {
 	int	fd;

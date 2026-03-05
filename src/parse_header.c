@@ -12,6 +12,7 @@
 
 #include "../includes/cub3d.h"
 
+/* Verilen string içindeki virgül sayısını döndürür (renk parse için). */
 static int	check_num_of_commas(char *str)
 {
 	int	i;
@@ -28,10 +29,10 @@ static int	check_num_of_commas(char *str)
 	return (num);
 }
 
-static void	parse_color(char *str, t_color *color, t_game *game)
+/* "R,G,B" stringini parçalayıp 0-255 arası değerleri vals dizisine yazar; hata durumunda parse_error ile çıkar. */
+static void	parse_color_values(char *str, int vals[3], t_game *game)
 {
 	char	**parts;
-	int		vals[3];
 	int		i;
 
 	if (check_num_of_commas(str) > 2)
@@ -60,13 +61,22 @@ static void	parse_color(char *str, t_color *color, t_game *game)
 		free_grid(parts, 4);
 		parse_error(-1, game, "color: too many values");
 	}
+	free_grid(parts, 3);
+}
+
+/* Renk stringini parse edip t_color yapısına yazar ve is_set'i 1 yapar. */
+static void	parse_color(char *str, t_color *color, t_game *game)
+{
+	int	vals[3];
+
+	parse_color_values(str, vals, game);
 	color->r = vals[0];
 	color->g = vals[1];
 	color->b = vals[2];
 	color->is_set = 1;
-	free_grid(parts, 3);
 }
 
+/* Satırdaki tanımlayıcıdan (id_len karakter) sonraki değer kısmının başlangıç adresini döndürür. */
 static char	*get_value(char *line, int id_len)
 {
 	char	*val;
@@ -77,6 +87,7 @@ static char	*get_value(char *line, int id_len)
 	return (val);
 }
 
+/* NO/SO/WE/EA texture satırını parse edip config'e path yazar; tanınmazsa -1 döner. */
 static int	parse_texture(char *line, t_game *game)
 {
 	char	**target;
@@ -104,6 +115,7 @@ static int	parse_texture(char *line, t_game *game)
 	return (0);
 }
 
+/* Tek header satırını yorumlar: texture (NO/SO/WE/EA), F veya C ise parse eder; map satırıysa -1 döner. */
 int	parse_header_line(char *line, t_game *game)
 {
 	char	*val;

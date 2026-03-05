@@ -13,6 +13,7 @@
 #include "../includes/cub3d.h"
 #include "mlx_functions/render.h"
 
+/* Map'teki oyuncu konum ve bakış yönüne göre render->player koordinat, dir ve plane değerlerini ayarlar. */
 void	init_player(t_render *render)
 {
 	t_map	*map;

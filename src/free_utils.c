@@ -12,6 +12,7 @@
 
 #include "../includes/cub3d.h"
 
+/* Map grid'ini satır satır ve grid pointer'ını serbest bırakır; map alanlarını sıfırlar. */
 void	free_map(t_map *map)
 {
 	int	y;
@@ -30,6 +31,7 @@ void	free_map(t_map *map)
 	map->width = 0;
 }
 
+/* İki boyutlu char dizisini (height satır) serbest bırakır. */
 void	free_grid(char **map, int height)
 {
 	int	i;
@@ -46,32 +48,28 @@ void	free_grid(char **map, int height)
 	free(map);
 }
 
+/* Tek bir texture path pointer'ını serbest bırakıp NULL yapar. */
+static void	free_texture_path(char **path)
+{
+	if (*path)
+	{
+		free(*path);
+		*path = NULL;
+	}
+}
+
+/* Config'teki dört texture path'ini serbest bırakır. */
 void	free_config(t_config *config)
 {
 	if (!config)
 		return ;
-	if (config->no)
-	{
-		free(config->no);
-		config->no = NULL;
-	}
-	if (config->so)
-	{
-		free(config->so);
-		config->so = NULL;
-	}
-	if (config->we)
-	{
-		free(config->we);
-		config->we = NULL;
-	}
-	if (config->ea)
-	{
-		free(config->ea);
-		config->ea = NULL;
-	}
+	free_texture_path(&config->no);
+	free_texture_path(&config->so);
+	free_texture_path(&config->we);
+	free_texture_path(&config->ea);
 }
 
+/* Oyun yapısını temizler: current_line, copy_grid, map ve config. */
 void	free_game(t_game *game)
 {
 	if (!game)
@@ -90,12 +88,11 @@ void	free_game(t_game *game)
 	free_config(&game->config);
 }
 
-void	free_render(t_render *render)
+/* Dört duvar texture görselini MLX ile yok eder. */
+static void	free_texture_images(t_render *render)
 {
 	int	i;
 
-	if (!render)
-		return ;
 	i = 0;
 	while (i < 4)
 	{
@@ -106,6 +103,11 @@ void	free_render(t_render *render)
 		}
 		i++;
 	}
+}
+
+/* Frame görselini, pencereyi ve MLX display'ini yok edip mlx pointer'ını serbest bırakır. */
+static void	free_frame_and_window(t_render *render)
+{
 	if (render->frame.mlx_img)
 	{
 		mlx_destroy_image(render->mlx, render->frame.mlx_img);
@@ -122,4 +124,13 @@ void	free_render(t_render *render)
 		free(render->mlx);
 		render->mlx = NULL;
 	}
+}
+
+/* Tüm render kaynaklarını serbest bırakır: texture görselleri, frame, pencere, MLX. */
+void	free_render(t_render *render)
+{
+	if (!render)
+		return ;
+	free_texture_images(render);
+	free_frame_and_window(render);
 }

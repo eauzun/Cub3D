@@ -12,6 +12,7 @@
 
 #include "../includes/cub3d.h"
 
+/* Satır sonundaki '\n' karakterini '\0' ile değiştirir. */
 void	remove_newline(char *line)
 {
 	int	i;
@@ -28,6 +29,7 @@ void	remove_newline(char *line)
 	}
 }
 
+/* Satırın yalnızca boşluk, tab veya newline içerip içermediğini kontrol eder; boşsa 1 döner. */
 int	is_empty_line(char *line)
 {
 	int	i;
@@ -42,12 +44,7 @@ int	is_empty_line(char *line)
 	return (1);
 }
 
-/*
-** Tüm kaynakları temizleyip çıkış yapar.
-** fd >= 0 ise kapatır. GNL static ve current_line temizlenir.
-** exit_check zaten free_game çağırır; current_line önceden temizleniyor
-** çünkü exit_check → free_game sırasına güvenmek yerine burada garantiliyoruz.
-*/
+/* Parse hatası: fd'yi kapatır, GNL ve current_line'ı temizler, mesajla exit_check ile çıkar. */
 void	parse_error(int fd, t_game *game, char *msg)
 {
 	if (fd >= 0)
@@ -61,6 +58,7 @@ void	parse_error(int fd, t_game *game, char *msg)
 	exit_check(msg, 1, -1, game);
 }
 
+/* Tüm texture ve zemin/tavan renklerinin tanımlı olup olmadığını kontrol eder; yoksa parse_error. */
 static void	validate_headers(int fd, t_game *game)
 {
 	if (!game->config.no || !game->config.so
@@ -72,6 +70,22 @@ static void	validate_headers(int fd, t_game *game)
 		parse_error(fd, game, "undefined ceiling color");
 }
 
+/* Boş olmayan satırı header olarak parse eder; tanınmazsa (map başlangıcı) first_map_line'e yazar ve 1 döner. */
+static int	process_header_line(int fd, t_game *game, char *line, char **first_map_line)
+{
+	if (parse_header_line(line, game) == -1)
+	{
+		validate_headers(fd, game);
+		game->current_line = NULL;
+		*first_map_line = line;
+		return (1);
+	}
+	free(line);
+	game->current_line = NULL;
+	return (0);
+}
+
+/* Dosyadan satır okuyup header parse eder; ilk map satırını first_map_line ile döndürür. */
 static void	read_headers(int fd, t_game *game, char **first_map_line)
 {
 	char	*line;
@@ -89,20 +103,31 @@ static void	read_headers(int fd, t_game *game, char **first_map_line)
 			line = get_next_line(fd);
 			continue ;
 		}
-		if (parse_header_line(line, game) == -1)
-		{
-			validate_headers(fd, game);
-			game->current_line = NULL;
-			*first_map_line = line;
+		if (process_header_line(fd, game, line, first_map_line))
 			return ;
-		}
-		free(line);
-		game->current_line = NULL;
 		line = get_next_line(fd);
 	}
 	validate_headers(fd, game);
 }
 
+/* Tek map satırını işler: boşsa map bitti sayıp check_after_map çağırır; değilse append_line ile ekler. */
+static int	read_one_map_line(int fd, t_game *game, char *line, int *cap)
+{
+	game->current_line = line;
+	remove_newline(line);
+	if (is_empty_line(line))
+	{
+		free(line);
+		game->current_line = NULL;
+		check_after_map(fd, game);
+		return (0);
+	}
+	game->current_line = NULL;
+	append_line(&game->map, line, cap, game);
+	return (1);
+}
+
+/* İlk map satırından itibaren dosya sonuna kadar tüm map satırlarını grid'e okur. */
 static void	read_map_lines(int fd, t_game *game, char *first)
 {
 	char	*line;
@@ -117,17 +142,8 @@ static void	read_map_lines(int fd, t_game *game, char *first)
 	line = get_next_line(fd);
 	while (line)
 	{
-		game->current_line = line;
-		remove_newline(line);
-		if (is_empty_line(line))
-		{
-			free(line);
-			game->current_line = NULL;
-			check_after_map(fd, game);
+		if (!read_one_map_line(fd, game, line, &cap))
 			return ;
-		}
-		game->current_line = NULL;
-		append_line(&game->map, line, &cap, game);
 		line = get_next_line(fd);
 	}
 	close(fd);
@@ -135,6 +151,7 @@ static void	read_map_lines(int fd, t_game *game, char *first)
 	game->map.grid[game->map.height] = NULL;
 }
 
+/* .cub dosyasını açar, header ve map'i parse eder, genişlik ve map doğrulamasını yapar. */
 int	map_parse(char *file_path, t_game *game)
 {
 	int		fd;

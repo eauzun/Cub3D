@@ -8,7 +8,9 @@
 # include "libft.h"
 # include "../src/mlx_functions/render.h"
 
-typedef struct s_render t_render;
+/* -----------------------------------------------------------------------------
+ *  Type definitions
+ * --------------------------------------------------------------------------- */
 
 typedef struct s_color
 {
@@ -63,34 +65,49 @@ typedef struct s_ray_dir
 	int		side;
 }	t_ray_dir;
 
-/* --- parse --- */
+/* -----------------------------------------------------------------------------
+ *  Parse (map file, header, extension)
+ * --------------------------------------------------------------------------- */
+
 int		map_parse(char *file_path, t_game *game);
 int		check_file_extension(char *file_path);
+int		is_empty_line(char *line);
+int		parse_header_line(char *line, t_game *game);
+
+/* -----------------------------------------------------------------------------
+ *  Map (grid, flood fill, validation, dimensions)
+ * --------------------------------------------------------------------------- */
+
 int		copy_grid(t_map *map, t_game *game);
 int		validate_map(t_map *map, t_game *game);
 int		check_zero_boundaries(t_map *map);
-int		is_empty_line(char *line);
-int		parse_header_line(char *line, t_game *game);
 int		find_max_width(t_map *map);
-
-/* --- map utils --- */
-void	flood_fill(t_map *map, int x, int y, int *open);
 void	append_line(t_map *map, char *line, int *cap, t_game *game);
+void	flood_fill(t_map *map, int x, int y, int *open);
 void	remove_newline(char *line);
 void	check_after_map(int fd, t_game *game);
 
-/* --- free --- */
+/* -----------------------------------------------------------------------------
+ *  Free
+ * --------------------------------------------------------------------------- */
+
 void	free_map(t_map *map);
 void	free_grid(char **map, int height);
 void	free_config(t_config *config);
 void	free_game(t_game *game);
 void	free_render(t_render *render);
 
-/* --- error --- */
+/* -----------------------------------------------------------------------------
+ *  Error / exit
+ * --------------------------------------------------------------------------- */
+
 int		exit_check(char *msg, int err, int status, t_game *game);
 void	parse_error(int fd, t_game *game, char *msg);
 
-/* --- player / render --- */
+/* -----------------------------------------------------------------------------
+ *  Player / game init
+ * --------------------------------------------------------------------------- */
+
 void	init_player(t_render *render);
 
 #endif

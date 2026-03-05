@@ -12,6 +12,7 @@
 
 #include "../includes/cub3d.h"
 
+/* Satırın sadece boşluk/tab/newline içerip içermediğini kontrol eder; boşsa 1 döner. */
 static int	is_empty_line(char *line)
 {
 	int	i;
@@ -26,6 +27,7 @@ static int	is_empty_line(char *line)
 	return (1);
 }
 
+/* Satırın geçerli bir map satırı (0,1, boşluk, N/S/E/W, tab) olup olmadığını kontrol eder. */
 static int	is_map_line(char *line)
 {
 	int	i;
@@ -42,6 +44,7 @@ static int	is_map_line(char *line)
 	return (1);
 }
 
+/* Texture ve renk sayacı dahil t_tex alanlarını varsayılan değerlere sıfırlar. */
 static void	tex_init(t_tex *tex)
 {
 	tex->no = NULL;
@@ -58,6 +61,7 @@ static void	tex_init(t_tex *tex)
 	tex->color_count = 0;
 }
 
+/* Tek satırı işler: boşsa 0, map satırıysa 1, config satırıysa parse edip 0 döner; hata -1. */
 static int	process_line(char *line, t_tex *tex, int *map_started)
 {
 	if (is_empty_line(line))
@@ -72,18 +76,14 @@ static int	process_line(char *line, t_tex *tex, int *map_started)
 	return (0);
 }
 
-int	parse_config(char *file_path, t_tex *tex) //kısaltılacak
+/* Dosyayı satır satır okuyup map satırı gelene veya dosya bitene kadar config satırlarını parse eder. */
+static int	read_config_lines(int fd, t_tex *tex)
 {
-	int		fd;
 	char	*line;
 	int		map_started;
 	int		ret;
 
 	map_started = 0;
-	tex_init(tex);
-	fd = open(file_path, O_RDONLY);
-	if (fd == -1)
-		return (error_msg("Cannot open file"));
 	while (1)
 	{
 		line = get_next_line(fd);
@@ -92,12 +92,26 @@ int	parse_config(char *file_path, t_tex *tex) //kısaltılacak
 		ret = process_line(line, tex, &map_started);
 		free(line);
 		if (ret == -1)
-		{
-			close(fd);
 			return (-1);
-		}
 		if (ret == 1)
 			break ;
+	}
+	return (0);
+}
+
+/* Config dosyasını açar, texture ve renk tanımlarını parse eder; eksik tanım varsa -1 döner. */
+int	parse_config(char *file_path, t_tex *tex)
+{
+	int	fd;
+
+	tex_init(tex);
+	fd = open(file_path, O_RDONLY);
+	if (fd == -1)
+		return (error_msg("Cannot open file"));
+	if (read_config_lines(fd, tex) == -1)
+	{
+		close(fd);
+		return (-1);
 	}
 	close(fd);
 	if (tex->tex_count != 4 || tex->color_count != 2)
