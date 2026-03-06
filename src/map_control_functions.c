@@ -6,14 +6,14 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/28 02:19:26 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/06 13:00:43 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 /* Tek bir satırı map->width uzunluğunda pad'leyip pad_map[y]'e yazar. */
-static int	pad_row(t_map *map, char **pad_map, int y)
+static int	padding_row(t_map *map, char **pad_map, int y)
 {
 	int	x;
 	int	len;
@@ -47,7 +47,7 @@ int	padding_map(t_map *map)
 	y = 0;
 	while (y < map->height)
 	{
-		if (pad_row(map, pad_map, y) == -1)
+		if (padding_row(map, pad_map, y) == -1)
 		{
 			free_grid(pad_map, y);
 			return (-1);

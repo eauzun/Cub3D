@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 01:13:01 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/02 01:25:38 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/06 15:36:28 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,39 +29,46 @@ static int	check_num_of_commas(char *str)
 	return (num);
 }
 
-/* "R,G,B" stringini parçalayıp 0-255 arası değerleri vals dizisine yazar; hata durumunda parse_error ile çıkar. */
-static void	parse_color_values(char *str, int vals[3], t_game *game)
-{
-	char	**parts;
-	int		i;
 
-	if (check_num_of_commas(str) > 2)
-		parse_error(-1, game, "color: parse failed");
-	parts = ft_split(str, ',');
-	if (!parts)
-		parse_error(-1, game, "color: parse failed");
-	i = 0;
-	while (i < 3)
-	{
-		if (!parts[i])
-		{
-			free_grid(parts, i);
-			parse_error(-1, game, "color: missing value");
-		}
-		vals[i] = ft_atoi(parts[i]);
-		if (vals[i] < 0 || vals[i] > 255)
-		{
-			free_grid(parts, 3);
-			parse_error(-1, game, "color: incompatible value");
-		}
-		i++;
-	}
-	if (parts[3])
-	{
-		free_grid(parts, 4);
-		parse_error(-1, game, "color: too many values");
-	}
-	free_grid(parts, 3);
+/* "R,G,B" stringini parçalayıp 0-255 arası değerleri vals dizisine yazar; hata durumunda parse_error ile çıkar. */
+static void parse_color_parts(char **parts, int vals[3], t_game *game)
+{
+    int i;
+
+    i = 0;
+    while (i < 3)
+    {
+        if (!parts[i])
+        {
+            free_grid(parts, i);
+            parse_error(-1, game, "color: missing value");
+        }
+        vals[i] = ft_atoi(parts[i]);
+        if (vals[i] < 0 || vals[i] > 255)
+        {
+            free_grid(parts, 3);
+            parse_error(-1, game, "color: incompatible value");
+        }
+        i++;
+    }
+}
+
+static void parse_color_values(char *str, int vals[3], t_game *game)
+{
+    char    **parts;
+
+    if (check_num_of_commas(str) > 2)
+        parse_error(-1, game, "color: parse failed");
+    parts = ft_split(str, ',');
+    if (!parts)
+        parse_error(-1, game, "color: parse failed");
+    parse_color_parts(parts, vals, game);
+    if (parts[3])
+    {
+        free_grid(parts, 4);
+        parse_error(-1, game, "color: too many values");
+    }
+    free_grid(parts, 3);
 }
 
 /* Renk stringini parse edip t_color yapısına yazar ve is_set'i 1 yapar. */
