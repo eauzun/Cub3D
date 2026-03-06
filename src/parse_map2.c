@@ -6,13 +6,31 @@
 /*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 03:22:13 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/01 00:00:00 by emuzun            ###   ########.fr       */
+/*   Updated: 2026/03/06 15:36:28 by emuzun            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Map bittikten sonra kalan satırları okur; boş olmayan satır gelirse hata mesajıyla çıkar. */
+/* Satırın texture veya renk identifier ile başlayıp başlamadığını kontrol eder; başlıyorsa 1 döner. */
+static int	is_header_identifier(char *line)
+{
+	if (ft_strncmp(line, "NO ", 3) == 0)
+		return (1);
+	if (ft_strncmp(line, "SO ", 3) == 0)
+		return (1);
+	if (ft_strncmp(line, "WE ", 3) == 0)
+		return (1);
+	if (ft_strncmp(line, "EA ", 3) == 0)
+		return (1);
+	if (line[0] == 'F' && (line[1] == ' ' || line[1] == '\t'))
+		return (1);
+	if (line[0] == 'C' && (line[1] == ' ' || line[1] == '\t'))
+		return (1);
+	return (0);
+}
+
+/* Map bittikten sonra kalan satırları okur; texture/color identifier gelirse hata ile çıkar. */
 void	check_after_map(int fd, t_game *game)
 {
 	char	*line;
@@ -22,7 +40,7 @@ void	check_after_map(int fd, t_game *game)
 	{
 		game->current_line = line;
 		remove_newline(line);
-		if (!is_empty_line(line))
+		if (!is_empty_line(line) && is_header_identifier(line))
 		{
 			game->current_line = NULL;
 			free(line);

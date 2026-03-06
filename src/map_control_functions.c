@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_control_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/06 13:00:43 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/06 16:33:48 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_header.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 01:13:01 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/06 15:36:28 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/06 17:21:05 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,46 +29,80 @@ static int	check_num_of_commas(char *str)
 	return (num);
 }
 
-
-/* "R,G,B" stringini parçalayıp 0-255 arası değerleri vals dizisine yazar; hata durumunda parse_error ile çıkar. */
-static void parse_color_parts(char **parts, int vals[3], t_game *game)
+/* Texture path'inin .xpm uzantısıyla bitip bitmediğini kontrol eder; geçerliyse 0, değilse -1 döner. */
+static int	check_xpm_extension(char *path)
 {
-    int i;
+	int	len;
 
-    i = 0;
-    while (i < 3)
-    {
-        if (!parts[i])
-        {
-            free_grid(parts, i);
-            parse_error(-1, game, "color: missing value");
-        }
-        vals[i] = ft_atoi(parts[i]);
-        if (vals[i] < 0 || vals[i] > 255)
-        {
-            free_grid(parts, 3);
-            parse_error(-1, game, "color: incompatible value");
-        }
-        i++;
-    }
+	len = ft_strlen(path);
+	if (len < 4)
+		return (-1);
+	if (path[len - 4] != '.'
+		|| path[len - 3] != 'x'
+		|| path[len - 2] != 'p'
+		|| path[len - 1] != 'm')
+		return (-1);
+	return (0);
 }
 
-static void parse_color_values(char *str, int vals[3], t_game *game)
+/* Bir color parçasının yalnızca rakamlardan oluşup oluşmadığını kontrol eder; geçerliyse 0, değilse -1 döner. */
+static int	is_valid_color_part(char *str)
 {
-    char    **parts;
+	int	i;
 
-    if (check_num_of_commas(str) > 2)
-        parse_error(-1, game, "color: parse failed");
-    parts = ft_split(str, ',');
-    if (!parts)
-        parse_error(-1, game, "color: parse failed");
-    parse_color_parts(parts, vals, game);
-    if (parts[3])
-    {
-        free_grid(parts, 4);
-        parse_error(-1, game, "color: too many values");
-    }
-    free_grid(parts, 3);
+	i = 0;
+	while (str[i] == ' ' || str[i] == '\t')
+		i++;
+	if (!str[i])
+		return (-1);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
+/* "R,G,B" stringini parçalayıp 0-255 arası değerleri vals dizisine yazar; hata durumunda parse_error ile çıkar. */
+static void	parse_color_parts(char **parts, int vals[3], t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (!parts[i] || is_valid_color_part(parts[i]) == -1)
+		{
+			free_grid(parts, 3);
+			parse_error(-1, game, "color: invalid value");
+		}
+		vals[i] = ft_atoi(parts[i]);
+		if (vals[i] < 0 || vals[i] > 255)
+		{
+			free_grid(parts, 3);
+			parse_error(-1, game, "color: incompatible value");
+		}
+		i++;
+	}
+}
+
+static void	parse_color_values(char *str, int vals[3], t_game *game)
+{
+	char	**parts;
+
+	if (check_num_of_commas(str) > 2)
+		parse_error(-1, game, "color: parse failed");
+	parts = ft_split(str, ',');
+	if (!parts)
+		parse_error(-1, game, "color: parse failed");
+	parse_color_parts(parts, vals, game);
+	if (parts[3])
+	{
+		free_grid(parts, 4);
+		parse_error(-1, game, "color: too many values");
+	}
+	free_grid(parts, 3);
 }
 
 /* Renk stringini parse edip t_color yapısına yazar ve is_set'i 1 yapar. */
@@ -116,6 +150,8 @@ static int	parse_texture(char *line, t_game *game)
 	val = get_value(line, 3);
 	if (*val == '\0')
 		parse_error(-1, game, "texture: path is empty");
+	if (check_xpm_extension(val) == -1)
+		parse_error(-1, game, "texture: must be a .xpm file");
 	*target = ft_strdup(val);
 	if (!*target)
 		parse_error(-1, game, "texture: memory error");
