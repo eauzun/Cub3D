@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 15:30:52 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 17:46:56 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 19:58:06 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RENDER_H
 # define RENDER_H
 
-# include "../mlx/mlx.h"
-# include "../includes/cub3d.h"
+# include "../../mlx/mlx.h"
+# include "../../includes/cub3d.h"
 # include <math.h>
 # include <sys/time.h>
 

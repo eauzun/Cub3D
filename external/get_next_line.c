@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:58:32 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 17:14:03 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 19:51:56 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,26 +100,17 @@ char	*get_next_line(int fd)
 
 	if (fd == -1)
 	{
-		if (all_line)
-		{
-			free(all_line);
-			all_line = NULL;
-		}
+		free(all_line);
+		all_line = NULL;
 		return (NULL);
 	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (0);
+		return (NULL);
 	if (!all_line)
 		all_line = ft_strdup("");
 	all_line = get_all_line(fd, all_line);
 	if (!all_line)
-		return (0);
-	line = till_nl(all_line);
-	all_line = return_rest(all_line);
-	if (!line && all_line)
-	{
-		free(all_line);
-		all_line = NULL;
-	}
+		return (NULL);
+	line = extract_line(&all_line);
 	return (line);
 }

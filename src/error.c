@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:10 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:36:34 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 19:59:01 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	parse_error(int fd, t_game *game, char *msg)
 	exit_check(msg, 1, -1, game);
 }
 
-static void	validate_headers(int fd, t_game *game)
+void	validate_headers(int fd, t_game *game)
 {
 	if (!game->config.no || !game->config.so || !game->config.we
 		|| !game->config.ea)

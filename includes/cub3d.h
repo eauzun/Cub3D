@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:26:47 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:28:09 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 20:00:29 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		map_parse(char *file_path, t_game *game);
 int		check_file_extension(char *file_path);
 int		is_empty_line(char *line);
 int		parse_header_line(char *line, t_game *game);
-
+char	*get_value(char *line, int id_len)
 int		copy_grid(t_map *map, t_game *game);
 int		padding_map(t_map *map);
 int		validate_map(t_map *map, t_game *game);
@@ -103,7 +103,7 @@ int		is_valid_color_part(char *str);
 void	parse_color_parts(char **parts, int vals[3], t_game *game);
 void	parse_color_values(char *str, int vals[3], t_game *game);
 void	parse_color(char *str, t_color *color, t_game *game);
-
+void	validate_headers(int fd, t_game *game);
 int		parse_texture(char *line, t_game *game);
 int		check_num_of_commas(char *str);
 int		check_xpm_extension(char *path);

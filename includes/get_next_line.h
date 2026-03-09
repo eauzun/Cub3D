@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:28:22 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:33:43 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 19:51:42 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,5 @@ char	*till_nl(char *all_line);
 char	*return_rest(char *all_line);
 char	*get_next_line(int fd);
 size_t	ft_strnl(char *s);
+char	*extract_line(char **all_line);
 #endif

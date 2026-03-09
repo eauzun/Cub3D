@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse_header.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 01:13:01 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 17:40:26 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 20:00:17 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-static char	*get_value(char *line, int id_len)
+char	*get_value(char *line, int id_len)
 {
 	char	*val;
 

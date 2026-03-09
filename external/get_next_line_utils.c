@@ -6,7 +6,7 @@
 /*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:58:26 by emuzun            #+#    #+#             */
-/*   Updated: 2025/01/22 00:01:20 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 19:51:26 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,4 +23,22 @@ size_t	ft_strnl(char *s)
 		s++;
 	}
 	return (0);
+}
+
+
+char	*extract_line(char **all_line)
+{
+	char	*line;
+	char	*tmp;
+
+	line = till_nl(*all_line);
+	tmp = return_rest(*all_line);
+	free(*all_line);
+	*all_line = tmp;
+	if (!line && *all_line)
+	{
+		free(*all_line);
+		*all_line = NULL;
+	}
+	return (line);
 }
