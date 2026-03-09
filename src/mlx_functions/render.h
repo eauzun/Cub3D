@@ -2,7 +2,9 @@
 # define RENDER_H
 
 # include "../mlx/mlx.h"
+#include "../includes/cub3d.h"
 # include <math.h>
+#include <sys/time.h>
 
 /* -----------------------------------------------------------------------------
  *  Forward declarations (types defined in cub3d.h)
@@ -116,5 +118,35 @@ double	calculate_wall_distance(t_ray_dir *ray, t_render *render);
 
 int		render_frame(t_render *render);
 void	put_pixel_to_mem(t_image *img, int x, int y, int color);
+
+/* -----------------------------------------------------------------------------
+ *  Game loop / player movement & rotation
+ * --------------------------------------------------------------------------- */
+
+int		game_loop(t_render *render);
+char	get_cell(t_map *map, double x, double y);
+void	try_move(t_render *render, double nx, double ny);
+void	rotate_player(t_render *render, double angle);
+
+/* -----------------------------------------------------------------------------
+ *  Wall column helpers (height, texture selection & coordinates)
+ * --------------------------------------------------------------------------- */
+
+void	init_wall_line(double perp_dist, t_render *render,
+			t_wall_column *wall_column);
+void	select_texture_index(t_ray_dir *ray, t_wall_column *wall_column);
+double	calculate_wall_x(t_render *render, t_ray_dir *ray, double perp_dist);
+void	init_texture_coords(t_render *render, t_ray_dir *ray,
+			t_wall_column *wall_column);
+
+
+/* -----------------------------------------------------------------------------
+ *  key hooks & window close
+ * --------------------------------------------------------------------------- */
+		
+int	key_press(int key, t_render *render);
+int	key_release(int key, t_render *render);
+int	on_close(t_render *render);
+
 
 #endif

@@ -79,6 +79,7 @@ int		parse_header_line(char *line, t_game *game);
  * --------------------------------------------------------------------------- */
 
 int		copy_grid(t_map *map, t_game *game);
+int		padding_map(t_map *map);
 int		validate_map(t_map *map, t_game *game);
 int		check_zero_boundaries(t_map *map);
 int		find_max_width(t_map *map);
