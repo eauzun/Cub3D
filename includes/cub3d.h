@@ -111,4 +111,23 @@ void	parse_error(int fd, t_game *game, char *msg);
 
 void	init_player(t_render *render);
 
+/* -----------------------------------------------------------------------------
+ *  Parse color (floor, ceiling)
+ * --------------------------------------------------------------------------- */
+
+int	is_valid_color_part(char *str);
+void	parse_color_parts(char **parts, int vals[3], t_game *game);
+void	parse_color_values(char *str, int vals[3], t_game *game);
+void	parse_color(char *str, t_color *color, t_game *game);
+
+/* -----------------------------------------------------------------------------
+ *  Parse texture (path, extension, commas) controller
+ * --------------------------------------------------------------------------- */
+
+int	parse_texture(char *line, t_game *game);
+int	check_num_of_commas(char *str);
+int	check_xpm_extension(char *path);
+
+
+
 #endif

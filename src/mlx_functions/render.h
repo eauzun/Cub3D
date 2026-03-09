@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/09 15:30:52 by emuzun            #+#    #+#             */
+/*   Updated: 2026/03/09 15:41:58 by emuzun           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RENDER_H
 # define RENDER_H
 
 # include "../mlx/mlx.h"
-#include "../includes/cub3d.h"
+# include "../includes/cub3d.h"
 # include <math.h>
-#include <sys/time.h>
+# include <sys/time.h>
 
 /* -----------------------------------------------------------------------------
  *  Forward declarations (types defined in cub3d.h)
  * --------------------------------------------------------------------------- */
 
-typedef struct s_config	t_config;
+typedef struct s_config		t_config;
 typedef struct s_map		t_map;
 typedef struct s_ray_dir	t_ray_dir;
 typedef struct s_game		t_game;
@@ -139,14 +151,12 @@ double	calculate_wall_x(t_render *render, t_ray_dir *ray, double perp_dist);
 void	init_texture_coords(t_render *render, t_ray_dir *ray,
 			t_wall_column *wall_column);
 
-
 /* -----------------------------------------------------------------------------
  *  key hooks & window close
  * --------------------------------------------------------------------------- */
-		
-int	key_press(int key, t_render *render);
-int	key_release(int key, t_render *render);
-int	on_close(t_render *render);
 
+int		key_press(int key, t_render *render);
+int		key_release(int key, t_render *render);
+int		on_close(t_render *render);
 
 #endif

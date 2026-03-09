@@ -6,15 +6,13 @@
 /*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:59:23 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 14:10:56 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 15:41:59 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-
 /* ─── pixel helper ────────────────────────────────────────────────────────── */
-
 /* Görsel belleğinde (x,y) konumuna verilen rengi yazar; sınır dışıysa hiçbir şey yapmaz. */
 void	put_pixel_to_mem(t_image *img, int x, int y, int color)
 {
@@ -50,7 +48,6 @@ int	init_frame(t_render *render)
 	render->frame.width = WINDOW_WIDTH;
 	return (1);
 }
-
 
 /* ─── init render ─────────────────────────────────────────────────────────── */
 

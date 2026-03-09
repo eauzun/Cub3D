@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray_and_dda_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:31:12 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 13:40:02 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 15:41:58 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
