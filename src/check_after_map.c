@@ -12,23 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-/* Satırın texture veya renk identifier ile başlayıp başlamadığını kontrol eder; başlıyorsa 1 döner. */
-static int	is_header_identifier(char *line)
-{
-	if (ft_strncmp(line, "NO ", 3) == 0)
-		return (1);
-	if (ft_strncmp(line, "SO ", 3) == 0)
-		return (1);
-	if (ft_strncmp(line, "WE ", 3) == 0)
-		return (1);
-	if (ft_strncmp(line, "EA ", 3) == 0)
-		return (1);
-	if (line[0] == 'F' && (line[1] == ' ' || line[1] == '\t'))
-		return (1);
-	if (line[0] == 'C' && (line[1] == ' ' || line[1] == '\t'))
-		return (1);
-	return (0);
-}
 
 /* Map bittikten sonra kalan satırları okur; texture/color identifier gelirse hata ile çıkar. */
 void	check_after_map(int fd, t_game *game)
@@ -92,4 +75,36 @@ int	find_max_width(t_map *map)
 		i++;
 	}
 	return (max);
+}
+
+/* Satır sonundaki '\n' karakterini '\0' ile değiştirir. */
+void	remove_newline(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\n')
+		{
+			line[i] = '\0';
+			break ;
+		}
+		i++;
+	}
+}
+
+/* Satırın yalnızca boşluk, tab veya newline içerip içermediğini kontrol eder; boşsa 1 döner. */
+int	is_empty_line(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
 }

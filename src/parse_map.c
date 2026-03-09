@@ -12,63 +12,6 @@
 
 #include "../includes/cub3d.h"
 
-/* Satır sonundaki '\n' karakterini '\0' ile değiştirir. */
-void	remove_newline(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == '\n')
-		{
-			line[i] = '\0';
-			break ;
-		}
-		i++;
-	}
-}
-
-/* Satırın yalnızca boşluk, tab veya newline içerip içermediğini kontrol eder; boşsa 1 döner. */
-int	is_empty_line(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-/* Parse hatası: fd'yi kapatır, GNL ve current_line'ı temizler, mesajla exit_check ile çıkar. */
-void	parse_error(int fd, t_game *game, char *msg)
-{
-	if (fd >= 0)
-		close(fd);
-	get_next_line(-1);
-	if (game && game->current_line)
-	{
-		free(game->current_line);
-		game->current_line = NULL;
-	}
-	exit_check(msg, 1, -1, game);
-}
-
-/* Tüm texture ve zemin/tavan renklerinin tanımlı olup olmadığını kontrol eder; yoksa parse_error. */
-static void	validate_headers(int fd, t_game *game)
-{
-	if (!game->config.no || !game->config.so
-		|| !game->config.we || !game->config.ea)
-		parse_error(fd, game, "undefined texture identifier");
-	if (!game->config.floor.is_set)
-		parse_error(fd, game, "undefined floor color");
-	if (!game->config.ceiling.is_set)
-		parse_error(fd, game, "undefined ceiling color");
-}
 
 /* Boş olmayan satırı header olarak parse eder; tanınmazsa (map başlangıcı) first_map_line'e yazar ve 1 döner. */
 static int	process_header_line(int fd, t_game *game, char *line, char **first_map_line)

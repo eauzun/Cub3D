@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:15 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/02/28 02:06:50 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 14:14:07 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,17 @@ void	flood_fill(t_map *map, int x, int y, int *open)
 	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
 	{
 		*open = -1;
-		return;
+		return ;
 	}
 	if (*open == -1)
-		return;
+		return ;
 	if (map->copy_grid[y][x] == ' ' || map->copy_grid[y][x] == '\0')
 	{
 		*open = -1;
-		return;
+		return ;
 	}
 	if (map->copy_grid[y][x] == '1' || map->copy_grid[y][x] == 'F')
-		return;
+		return ;
 	map->copy_grid[y][x] = 'F';
 	flood_fill(map, x + 1, y, open);
 	flood_fill(map, x, y + 1, open);

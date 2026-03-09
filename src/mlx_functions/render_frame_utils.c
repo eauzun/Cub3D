@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_frame_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:40:28 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 13:48:59 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 14:16:47 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,3 @@ void	init_texture_coords(t_render *render, t_ray_dir *ray,
 			- render->frame.height / 2.0
 			+ wall_column->line_height / 2.0) * wall_column->step;
 }
-

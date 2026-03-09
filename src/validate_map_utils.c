@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_control_functions.c                            :+:      :+:    :+:   */
+/*   validate_map_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/06 16:33:48 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 14:15:23 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static int	validate_player(t_map *map)
 /* Map'in kapalı olup olmadığını flood fill ile kontrol eder; dışarı sızıntı varsa -1 döner. */
 static int	is_map_closed(t_map *map, t_game *game)
 {
-	int open;
+	int	open;
 
 	open = 0;
 	if (copy_grid(map, game) == -1)
@@ -114,20 +114,4 @@ static int	is_map_closed(t_map *map, t_game *game)
 	free_grid(map->copy_grid, map->height);
 	map->copy_grid = NULL;
 	return (open);
-}
-
-/* Map doğrulaması: padding, oyuncu, sıfır sınırları ve kapalılık kontrolü; hata durumunda exit_check ile çıkar. */
-int	validate_map(t_map *map, t_game *game)
-{
-	if (padding_map(map) == -1)
-		exit_check("map padding failed", 1, -1, game);
-	if (validate_player(map) == -1)
-		exit_check("player validation failed", 1, -1, game);
-	if (map->player_num != 1)
-		exit_check("invalid player count", 1, -1, game);
-	if (check_zero_boundaries(map) == -1)
-		exit_check("zero num error!", 1, -1, game);
-	if (is_map_closed(map, game) == -1)
-		exit_check("map is not closed!", 1, -1, game);
-	return (0);
 }

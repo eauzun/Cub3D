@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   render_frame.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:33:36 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 13:49:54 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 14:18:17 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
-
 
 /* Tek kolonda tavan ve zemin bölümlerini config renklerine göre çizer. */
 void	draw_ceiling_floor(t_render *render, int screen_x,
@@ -34,7 +33,6 @@ void	draw_ceiling_floor(t_render *render, int screen_x,
 	while (pixel_y < render->frame.height)
 		put_pixel_to_mem(&render->frame, screen_x, pixel_y++, floor_rgb);
 }
-
 
 /* Tek bir duvar kolonunu texture'tan örnekleyerek ekrana çizer. */
 void	draw_textured_column(t_render *render, int screen_x,
@@ -74,15 +72,13 @@ void	draw_wall_column(t_render *render, t_ray_dir *ray,
 	draw_textured_column(render, screen_x, &wall_column);
 }
 
-
 /* Tüm ekran kolonları için ışın atıp duvarları çizer ve görseli pencereye kopyalar. */
 int	render_frame(t_render *render)
 {
 	int			screen_x;
 	t_ray_dir	ray;
-	/* perp_dist: oyuncudan duvara dik uzaklık; duvar yüksekliği buna göre hesaplanır. */
 	double		perp_dist;
-
+	/* perp_dist: oyuncudan duvara dik uzaklık; duvar yüksekliği buna göre hesaplanır. */
 	if (!render->frame.mlx_addr)
 		return (0);
 	screen_x = 0;
@@ -102,4 +98,3 @@ int	render_frame(t_render *render)
 		render->frame.mlx_img, 0, 0);
 	return (1);
 }
-
