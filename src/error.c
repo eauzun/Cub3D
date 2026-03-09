@@ -15,15 +15,12 @@
 /* Hata mesajı yazar; err=1 ise "Error\n" ekler; status=-1 ise free_game ile exit(1), aksi halde status döner. */
 int	exit_check(char *msg, int err, int status, t_game *game)
 {
-	int	fd;
-
 	if (!msg && !err && !status)
 		return (0);
-	fd = err ? 2 : 1;
 	if (err)
-		ft_putstr_fd("Error\n", fd);
+		ft_putstr_fd("Error\n", 2);
 	if (msg)
-		ft_putendl_fd(msg, fd);
+		ft_putendl_fd(msg, 1);
 	if (status == -1)
 	{
 		get_next_line(-1);
