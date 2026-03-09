@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 00:59:23 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:59 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:44:20 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* ─── pixel helper ────────────────────────────────────────────────────────── */
-/* Görsel belleğinde (x,y) konumuna verilen rengi yazar; sınır dışıysa hiçbir şey yapmaz. */
 void	put_pixel_to_mem(t_image *img, int x, int y, int color)
 {
 	char	*dest;
@@ -25,9 +23,6 @@ void	put_pixel_to_mem(t_image *img, int x, int y, int color)
 	*(unsigned int *)dest = color;
 }
 
-/* ─── frame init ──────────────────────────────────────────────────────────── */
-
-/* Pencere boyutunda bir MLX görseli oluşturup render->frame alanlarına bağlar. */
 int	init_frame(t_render *render)
 {
 	render->frame.mlx_img = mlx_new_image(render->mlx,
@@ -49,9 +44,6 @@ int	init_frame(t_render *render)
 	return (1);
 }
 
-/* ─── init render ─────────────────────────────────────────────────────────── */
-
-/* Tuş bayraklarını, MLX penceresini, frame'i ve hook'ları ayarlar; texture'ları yükleyip ilk frame'i çizer. */
 int	init_render(t_render *render)
 {
 	render->key_w = 0;

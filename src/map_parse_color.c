@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse_color.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 14:16:00 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 14:16:10 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:40:00 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Bir color parçasının yalnızca rakamlardan oluşup oluşmadığını kontrol eder; geçerliyse 0, değilse -1 döner. */
 int	is_valid_color_part(char *str)
 {
 	int	i;
@@ -31,7 +30,6 @@ int	is_valid_color_part(char *str)
 	return (0);
 }
 
-/* "R,G,B" stringini parçalayıp 0-255 arası değerleri vals dizisine yazar; hata durumunda parse_error ile çıkar. */
 void	parse_color_parts(char **parts, int vals[3], t_game *game)
 {
 	int	i;
@@ -72,7 +70,6 @@ void	parse_color_values(char *str, int vals[3], t_game *game)
 	free_grid(parts, 3);
 }
 
-/* Renk stringini parse edip t_color yapısına yazar ve is_set'i 1 yapar. */
 void	parse_color(char *str, t_color *color, t_game *game)
 {
 	int	vals[3];

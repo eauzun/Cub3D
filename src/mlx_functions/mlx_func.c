@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_func.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:30:30 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:59 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:43:59 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* ─── key hooks ───────────────────────────────────────────────────────────── */
-
-/* Tuş basıldığında çağrılır: ESC ile kapatma, W/A/S/D ve oklar için bayrakları 1 yapar. */
 int	key_press(int key, t_render *render)
 {
 	if (key == KEY_ESC)
@@ -34,7 +31,6 @@ int	key_press(int key, t_render *render)
 	return (0);
 }
 
-/* Tuş bırakıldığında çağrılır: ilgili hareket/dönüş bayrağını 0 yapar. */
 int	key_release(int key, t_render *render)
 {
 	if (key == KEY_W)
@@ -52,9 +48,6 @@ int	key_release(int key, t_render *render)
 	return (0);
 }
 
-/* ─── window / close ──────────────────────────────────────────────────────── */
-
-/* Pencere kapatıldığında veya ESC'de: render ve game kaynaklarını serbest bırakıp programı sonlandırır. */
 int	on_close(t_render *render)
 {
 	t_game	*game;
@@ -66,7 +59,6 @@ int	on_close(t_render *render)
 	return (0);
 }
 
-/* MLX bağlamı ve pencere oluşturur; başarısızsa hata mesajıyla 1 döner. */
 int	init_mlx_window(t_render *render)
 {
 	render->mlx = mlx_init();

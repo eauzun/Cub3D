@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   texture_loader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:32:35 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 14:16:36 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:47:43 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* ─── texture loader ──────────────────────────────────────────────────────── */
-
-/* Texture dosya yollarını config'ten alıp diziye yerleştirir. */
 static void	init_texture_paths(t_render *render, char *texture_paths[4])
 {
 	texture_paths[0] = render->config->no;
@@ -23,7 +20,6 @@ static void	init_texture_paths(t_render *render, char *texture_paths[4])
 	texture_paths[3] = render->config->ea;
 }
 
-/* Bir texture yolu boşsa, kaynakları serbest bırakır ve hata ile çıkar. */
 static void	validate_texture_path(t_render *render, char *texture_path)
 {
 	if (!texture_path)
@@ -34,7 +30,6 @@ static void	validate_texture_path(t_render *render, char *texture_path)
 	}
 }
 
-/* Tek bir XPM texture dosyasını yükler ve ilgili t_image alanlarını doldurur. */
 static void	load_single_texture(t_render *render, t_image *image,
 		char *texture_path)
 {
@@ -58,7 +53,6 @@ static void	load_single_texture(t_render *render, t_image *image,
 	image->height = texture_height;
 }
 
-/* Dört duvar texture'ını config path'lerinden yükleyip render->images dizisine yazar. */
 static void	load_textures(t_render *render)
 {
 	char	*texture_paths[4];

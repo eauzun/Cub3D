@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:17 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/01 00:00:00 by emuzun            ###   ########.fr       */
+/*   Updated: 2026/03/09 17:42:13 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
-/* Boş olmayan satırı header olarak parse eder; tanınmazsa (map başlangıcı) first_map_line'e yazar ve 1 döner. */
-static int	process_header_line(int fd, t_game *game, char *line, char **first_map_line)
+static int	process_header_line(int fd, t_game *game, char *line,
+		char **first_map_line)
 {
 	if (parse_header_line(line, game) == -1)
 	{
@@ -28,7 +27,6 @@ static int	process_header_line(int fd, t_game *game, char *line, char **first_ma
 	return (0);
 }
 
-/* Dosyadan satır okuyup header parse eder; ilk map satırını first_map_line ile döndürür. */
 static void	read_headers(int fd, t_game *game, char **first_map_line)
 {
 	char	*line;
@@ -53,7 +51,6 @@ static void	read_headers(int fd, t_game *game, char **first_map_line)
 	validate_headers(fd, game);
 }
 
-/* Tek map satırını işler: boşsa map bitti sayıp check_after_map çağırır; değilse append_line ile ekler. */
 static int	read_one_map_line(int fd, t_game *game, char *line, int *cap)
 {
 	game->current_line = line;
@@ -70,7 +67,6 @@ static int	read_one_map_line(int fd, t_game *game, char *line, int *cap)
 	return (1);
 }
 
-/* İlk map satırından itibaren dosya sonuna kadar tüm map satırlarını grid'e okur. */
 static void	read_map_lines(int fd, t_game *game, char *first)
 {
 	char	*line;
@@ -94,7 +90,6 @@ static void	read_map_lines(int fd, t_game *game, char *first)
 	game->map.grid[game->map.height] = NULL;
 }
 
-/* .cub dosyasını açar, header ve map'i parse eder, genişlik ve map doğrulamasını yapar. */
 int	map_parse(char *file_path, t_game *game)
 {
 	int		fd;

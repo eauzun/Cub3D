@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   render_frame_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:40:28 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 14:16:47 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:45:23 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* Duvar kolonunun ekrandaki yüksekliğini ve başlangıç/bitiş satırlarını hesaplar. */
 void	init_wall_line(double perp_dist, t_render *render,
 		t_wall_column *wall_column)
 {
@@ -27,7 +26,6 @@ void	init_wall_line(double perp_dist, t_render *render,
 		wall_column->draw_end = render->frame.height - 1;
 }
 
-/* Işının tarafına ve yönüne göre kullanılacak texture indeksini seçer. */
 void	select_texture_index(t_ray_dir *ray, t_wall_column *wall_column)
 {
 	if (ray->side == 0)
@@ -46,7 +44,6 @@ void	select_texture_index(t_ray_dir *ray, t_wall_column *wall_column)
 	}
 }
 
-/* Oyuncu konumu ve ışın yönüne göre duvarın vurulduğu x konumunu hesaplar. */
 double	calculate_wall_x(t_render *render, t_ray_dir *ray,
 		double perp_dist)
 {
@@ -60,7 +57,6 @@ double	calculate_wall_x(t_render *render, t_ray_dir *ray,
 	return (wall_x);
 }
 
-/* Texture koordinatlarını (sütun, adım ve başlangıç ofseti) hesaplar. */
 void	init_texture_coords(t_render *render, t_ray_dir *ray,
 		t_wall_column *wall_column)
 {

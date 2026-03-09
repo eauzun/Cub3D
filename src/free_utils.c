@@ -3,17 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/03 18:21:12 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/01 00:00:00 by emuzun            ###   ########.fr       */
+/*   Created: 2026/03/09 17:37:11 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/03/09 17:37:18 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-
-/* Tek bir texture path pointer'ını serbest bırakıp NULL yapar. */
 static void	free_texture_path(char **path)
 {
 	if (*path)
@@ -23,7 +21,6 @@ static void	free_texture_path(char **path)
 	}
 }
 
-/* Config'teki dört texture path'ini serbest bırakır. */
 void	free_config(t_config *config)
 {
 	if (!config)
@@ -34,8 +31,6 @@ void	free_config(t_config *config)
 	free_texture_path(&config->ea);
 }
 
-
-/* Dört duvar texture görselini MLX ile yok eder. */
 static void	free_texture_images(t_render *render)
 {
 	int	i;
@@ -52,7 +47,6 @@ static void	free_texture_images(t_render *render)
 	}
 }
 
-/* Frame görselini, pencereyi ve MLX display'ini yok edip mlx pointer'ını serbest bırakır. */
 static void	free_frame_and_window(t_render *render)
 {
 	if (render->frame.mlx_img)
@@ -72,4 +66,3 @@ static void	free_frame_and_window(t_render *render)
 		render->mlx = NULL;
 	}
 }
-

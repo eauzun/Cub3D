@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ray_and_dda_functions.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:31:12 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:58 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:44:54 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* ─── ray helpers ─────────────────────────────────────────────────────────── */
-
-/* Ekran kolonu x için ışın yönü ve başlangıç map hücresini hesaplar. */
 int	init_ray_direction(t_ray_dir *ray, t_render *render, int x)
 {
 	double	camera_x;
@@ -30,7 +27,6 @@ int	init_ray_direction(t_ray_dir *ray, t_render *render, int x)
 	return (0);
 }
 
-/* Işın yönüne göre delta mesafe ve adım (step_x, step_y) değerlerini hesaplar. */
 void	calculate_delta_and_step(t_ray_dir *ray)
 {
 	if (ray->ray_dir_x == 0)
@@ -51,7 +47,6 @@ void	calculate_delta_and_step(t_ray_dir *ray)
 		ray->step_y = 1;
 }
 
-/* Işının ilk yatay/dikey grid çizgisine kadar olan yan mesafelerini hesaplar. */
 void	calculate_side_distance(t_ray_dir *ray, t_render *render)
 {
 	if (ray->ray_dir_x < 0)
@@ -68,7 +63,6 @@ void	calculate_side_distance(t_ray_dir *ray, t_render *render)
 			* ray->delta_dist_y;
 }
 
-/* DDA ile ışını ilerleterek duvara (veya harita sınırına) çarpana kadar map üzerinde adımlar. */
 void	dda_algorithm(t_ray_dir *ray, t_render *render)
 {
 	while (ray->hit == 0)
@@ -96,8 +90,6 @@ void	dda_algorithm(t_ray_dir *ray, t_render *render)
 	}
 }
 
-/* Oyuncudan duvara olan dik (perpendicular) uzaklığı döndürür.
- * Fish-eye etkisini önlemek için ışın uzunluğu yerine bu değer kullanılır. */
 double	calculate_wall_distance(t_ray_dir *ray, t_render *render)
 {
 	if (ray->side == 0)

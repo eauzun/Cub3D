@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_map2.c                                       :+:      :+:    :+:   */
+/*   check_after_map.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/19 03:22:13 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/06 15:36:28 by emuzun            ###   ########.fr       */
+/*   Created: 2026/03/09 17:35:08 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/03/09 17:35:53 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Map bittikten sonra kalan satırları okur; texture/color identifier gelirse hata ile çıkar. */
-void check_after_map(int fd, t_game *game)
+void	check_after_map(int fd, t_game *game)
 {
-	char *line;
+	char	*line;
 
 	line = get_next_line(fd);
 	while (line)
@@ -38,10 +37,9 @@ void check_after_map(int fd, t_game *game)
 	get_next_line(-1);
 }
 
-/* Yeni satırı map grid'ine ekler; gerekirse grid kapasitesini ikiye katlar. */
-void append_line(t_map *map, char *line, int *cap, t_game *game)
+void	append_line(t_map *map, char *line, int *cap, t_game *game)
 {
-	char **tmp;
+	char	**tmp;
 
 	if (map->height >= *cap - 1)
 	{
@@ -57,12 +55,11 @@ void append_line(t_map *map, char *line, int *cap, t_game *game)
 	map->height++;
 }
 
-/* Map'teki en uzun satırın karakter sayısını (genişlik) döndürür. */
-int find_max_width(t_map *map)
+int	find_max_width(t_map *map)
 {
-	int i;
-	int max;
-	int len;
+	int	i;
+	int	max;
+	int	len;
 
 	i = 0;
 	max = 0;
@@ -76,10 +73,9 @@ int find_max_width(t_map *map)
 	return (max);
 }
 
-/* Satır sonundaki '\n' karakterini '\0' ile değiştirir. */
-void remove_newline(char *line)
+void	remove_newline(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i])
@@ -87,16 +83,15 @@ void remove_newline(char *line)
 		if (line[i] == '\n')
 		{
 			line[i] = '\0';
-			break;
+			break ;
 		}
 		i++;
 	}
 }
 
-/* Satırın yalnızca boşluk, tab veya newline içerip içermediğini kontrol eder; boşsa 1 döner. */
-int is_empty_line(char *line)
+int	is_empty_line(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (line[i])

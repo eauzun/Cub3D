@@ -6,15 +6,12 @@
 /*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:29:25 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 13:50:14 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/09 17:47:17 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* ─── movement helpers ────────────────────────────────────────────────────── */
-
-/* Verilen (x,y) map hücresindeki karakteri döndürür; sınır dışı veya geçersiz indeks için ' ' döner. */
 char	get_cell(t_map *map, double x, double y)
 {
 	int	map_x_index;
@@ -30,7 +27,6 @@ char	get_cell(t_map *map, double x, double y)
 	return (map->grid[map_y_index][map_x_index]);
 }
 
-/* Oyuncuyu (nx,ny) konumuna taşımaya çalışır; duvar veya boşluk varsa taşımaz. */
 void	try_move(t_render *render, double nx, double ny)
 {
 	if (get_cell(render->map, nx, render->player.y) != '1'
@@ -43,9 +39,6 @@ void	try_move(t_render *render, double nx, double ny)
 		render->player.y = ny;
 }
 
-/* ─── rotation ────────────────────────────────────────────────────────────── */
-
-/* Oyuncu yön ve kamera düzlemini verilen açı kadar (radyan) döndürür. */
 void	rotate_player(t_render *render, double angle)
 {
 	double	old_dir_x;

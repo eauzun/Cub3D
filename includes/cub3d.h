@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/09 17:26:47 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/03/09 17:28:09 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -7,10 +19,6 @@
 # include "get_next_line.h"
 # include "libft.h"
 # include "../src/mlx_functions/render.h"
-
-/* -----------------------------------------------------------------------------
- *  Type definitions
- * --------------------------------------------------------------------------- */
 
 typedef struct s_color
 {
@@ -65,18 +73,10 @@ typedef struct s_ray_dir
 	int		side;
 }	t_ray_dir;
 
-/* -----------------------------------------------------------------------------
- *  Parse (map file, header, extension)
- * --------------------------------------------------------------------------- */
-
 int		map_parse(char *file_path, t_game *game);
 int		check_file_extension(char *file_path);
 int		is_empty_line(char *line);
 int		parse_header_line(char *line, t_game *game);
-
-/* -----------------------------------------------------------------------------
- *  Map (grid, flood fill, validation, dimensions)
- * --------------------------------------------------------------------------- */
 
 int		copy_grid(t_map *map, t_game *game);
 int		padding_map(t_map *map);
@@ -88,46 +88,23 @@ void	flood_fill(t_map *map, int x, int y, int *open);
 void	remove_newline(char *line);
 void	check_after_map(int fd, t_game *game);
 
-/* -----------------------------------------------------------------------------
- *  Free
- * --------------------------------------------------------------------------- */
-
 void	free_map(t_map *map);
 void	free_grid(char **map, int height);
 void	free_config(t_config *config);
 void	free_game(t_game *game);
 void	free_render(t_render *render);
 
-/* -----------------------------------------------------------------------------
- *  Error / exit
- * --------------------------------------------------------------------------- */
-
 int		exit_check(char *msg, int err, int status, t_game *game);
 void	parse_error(int fd, t_game *game, char *msg);
 
-/* -----------------------------------------------------------------------------
- *  Player / game init
- * --------------------------------------------------------------------------- */
-
 void	init_player(t_render *render);
 
-/* -----------------------------------------------------------------------------
- *  Parse color (floor, ceiling)
- * --------------------------------------------------------------------------- */
-
-int	is_valid_color_part(char *str);
+int		is_valid_color_part(char *str);
 void	parse_color_parts(char **parts, int vals[3], t_game *game);
 void	parse_color_values(char *str, int vals[3], t_game *game);
 void	parse_color(char *str, t_color *color, t_game *game);
 
-/* -----------------------------------------------------------------------------
- *  Parse texture (path, extension, commas) controller
- * --------------------------------------------------------------------------- */
-
-int	parse_texture(char *line, t_game *game);
-int	check_num_of_commas(char *str);
-int	check_xpm_extension(char *path);
-
-
-
+int		parse_texture(char *line, t_game *game);
+int		check_num_of_commas(char *str);
+int		check_xpm_extension(char *path);
 #endif

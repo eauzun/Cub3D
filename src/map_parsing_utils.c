@@ -1,7 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_parsing_utils.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/09 17:40:43 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/03/09 17:40:54 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* NO/SO/WE/EA texture satırını parse edip config'e path yazar; tanınmazsa -1 döner. */
 int	parse_texture(char *line, t_game *game)
 {
 	char	**target;
@@ -31,7 +41,6 @@ int	parse_texture(char *line, t_game *game)
 	return (0);
 }
 
-/* Satırın texture veya renk identifier ile başlayıp başlamadığını kontrol eder; başlıyorsa 1 döner. */
 static int	is_header_identifier(char *line)
 {
 	if (ft_strncmp(line, "NO ", 3) == 0)
@@ -48,7 +57,7 @@ static int	is_header_identifier(char *line)
 		return (1);
 	return (0);
 }
-/* Verilen string içindeki virgül sayısını döndürür (renk parse için). */
+
 int	check_num_of_commas(char *str)
 {
 	int	i;
@@ -65,7 +74,6 @@ int	check_num_of_commas(char *str)
 	return (num);
 }
 
-/* Texture path'inin .xpm uzantısıyla bitip bitmediğini kontrol eder; geçerliyse 0, değilse -1 döner. */
 int	check_xpm_extension(char *path)
 {
 	int	len;
@@ -73,9 +81,7 @@ int	check_xpm_extension(char *path)
 	len = ft_strlen(path);
 	if (len < 4)
 		return (-1);
-	if (path[len - 4] != '.'
-		|| path[len - 3] != 'x'
-		|| path[len - 2] != 'p'
+	if (path[len - 4] != '.' || path[len - 3] != 'x' || path[len - 2] != 'p'
 		|| path[len - 1] != 'm')
 		return (-1);
 	return (0);

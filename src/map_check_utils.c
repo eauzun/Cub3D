@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_parse_utils.c                                  :+:      :+:    :+:   */
+/*   map_check_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:15 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 14:14:07 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:39:27 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Dosya adının .cub ile bitip bitmediğini kontrol eder; geçerliyse 0, değilse -1 döner. */
 int	check_file_extension(char *file_path)
 {
 	int	len;
@@ -28,7 +27,6 @@ int	check_file_extension(char *file_path)
 	return (0);
 }
 
-/* Flood fill için map grid'inin bir kopyasını oluşturup map->copy_grid'e yazar. */
 int	copy_grid(t_map *map, t_game *game)
 {
 	int	i;
@@ -50,7 +48,6 @@ int	copy_grid(t_map *map, t_game *game)
 	return (0);
 }
 
-/* Recursive flood fill: (x,y)'den başlayarak ulaşılabilir hücreleri 'F' ile doldurur; dışarı çıkarsa open -1 olur. */
 void	flood_fill(t_map *map, int x, int y, int *open)
 {
 	if (x < 0 || y < 0 || x >= map->width || y >= map->height)
@@ -74,7 +71,6 @@ void	flood_fill(t_map *map, int x, int y, int *open)
 	flood_fill(map, x, y - 1, open);
 }
 
-/* Tek bir '0' hücresinin komşularında boşluk olup olmadığını kontrol eder. */
 static int	check_zero_neighbors(t_map *map, int x, int y)
 {
 	if (y - 1 < 0 || map->grid[y - 1][x] == ' ')
@@ -88,7 +84,6 @@ static int	check_zero_neighbors(t_map *map, int x, int y)
 	return (0);
 }
 
-/* Sıfırların yanında boşluk olup olmadığını kontrol eder. */
 int	check_zero_boundaries(t_map *map)
 {
 	int	x;

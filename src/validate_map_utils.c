@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 14:15:23 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:42:40 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Tek bir satırı map->width uzunluğunda pad'leyip pad_map[y]'e yazar. */
 static int	padding_row(t_map *map, char **pad_map, int y)
 {
 	int	x;
@@ -35,7 +34,6 @@ static int	padding_row(t_map *map, char **pad_map, int y)
 	return (0);
 }
 
-/* Tüm satır uzunluklarını aynı yapar; flood fill için gerekli. */
 int	padding_map(t_map *map)
 {
 	char	**pad_map;
@@ -60,7 +58,6 @@ int	padding_map(t_map *map)
 	return (0);
 }
 
-/* Tek hücreyi kontrol eder: N/S/E/W ise oyuncu bilgisini yazar, geçersiz karakter ise -1 döner. */
 static int	validate_cell(t_map *map, int x, int y)
 {
 	char	c;
@@ -80,7 +77,6 @@ static int	validate_cell(t_map *map, int x, int y)
 	return (0);
 }
 
-/* Oyuncu sayısı ve konumunu bulur; 0, 1, ' ' dışı geçersiz karakter varsa -1 döner. */
 static int	validate_player(t_map *map)
 {
 	int	x;
@@ -102,7 +98,6 @@ static int	validate_player(t_map *map)
 	return (0);
 }
 
-/* Map'in kapalı olup olmadığını flood fill ile kontrol eder; dışarı sızıntı varsa -1 döner. */
 static int	is_map_closed(t_map *map, t_game *game)
 {
 	int	open;

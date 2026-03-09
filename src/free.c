@@ -1,7 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/09 17:37:35 by ecakdemi          #+#    #+#             */
+/*   Updated: 2026/03/09 17:37:45 by ecakdemi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Map grid'ini satır satır ve grid pointer'ını serbest bırakır; map alanlarını sıfırlar. */
 void	free_map(t_map *map)
 {
 	int	y;
@@ -20,7 +30,6 @@ void	free_map(t_map *map)
 	map->width = 0;
 }
 
-/* İki boyutlu char dizisini (height satır) serbest bırakır. */
 void	free_grid(char **map, int height)
 {
 	int	i;
@@ -37,7 +46,6 @@ void	free_grid(char **map, int height)
 	free(map);
 }
 
-/* Oyun yapısını temizler: current_line, copy_grid, map ve config. */
 void	free_game(t_game *game)
 {
 	if (!game)
@@ -56,7 +64,6 @@ void	free_game(t_game *game)
 	free_config(&game->config);
 }
 
-/* Tüm render kaynaklarını serbest bırakır: texture görselleri, frame, pencere, MLX. */
 void	free_render(t_render *render)
 {
 	if (!render)

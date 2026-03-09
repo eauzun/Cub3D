@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   map_parse_header.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 01:13:01 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 14:22:27 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:40:26 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Satırdaki tanımlayıcıdan (id_len karakter) sonraki değer kısmının başlangıç adresini döndürür. */
 static char	*get_value(char *line, int id_len)
 {
 	char	*val;
@@ -23,7 +22,6 @@ static char	*get_value(char *line, int id_len)
 	return (val);
 }
 
-/* Tek header satırını yorumlar: texture (NO/SO/WE/EA), F veya C ise parse eder; map satırıysa -1 döner. */
 int	parse_header_line(char *line, t_game *game)
 {
 	char	*val;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 15:30:52 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:58 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:46:56 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,10 @@
 # include <math.h>
 # include <sys/time.h>
 
-/* -----------------------------------------------------------------------------
- *  Forward declarations (types defined in cub3d.h)
- * --------------------------------------------------------------------------- */
-
 typedef struct s_config		t_config;
 typedef struct s_map		t_map;
 typedef struct s_ray_dir	t_ray_dir;
 typedef struct s_game		t_game;
-
-/* -----------------------------------------------------------------------------
- *  Constants
- * --------------------------------------------------------------------------- */
 
 # define WINDOW_WIDTH   800
 # define WINDOW_HEIGHT  600
@@ -48,10 +40,6 @@ typedef struct s_game		t_game;
 
 # define MOVE_SPEED_PER_SEC  2.0
 # define ROT_SPEED_PER_SEC   2.0
-
-/* -----------------------------------------------------------------------------
- *  Type definitions (render / MLX)
- * --------------------------------------------------------------------------- */
 
 typedef struct s_player
 {
@@ -93,7 +81,6 @@ typedef struct s_render
 	double		last_frame_time;
 }	t_render;
 
-/* Duvar kolonu çizimi için geçici değerler (sadece render tarafında kullanılır). */
 typedef struct s_wall_column
 {
 	int		line_height;
@@ -106,17 +93,9 @@ typedef struct s_wall_column
 	double	texture_position;
 }	t_wall_column;
 
-/* -----------------------------------------------------------------------------
- *  Init (window, render, frame)
- * --------------------------------------------------------------------------- */
-
 int		init_mlx_window(t_render *render);
 int		init_render(t_render *render);
 int		init_frame(t_render *render);
-
-/* -----------------------------------------------------------------------------
- *  Ray casting
- * --------------------------------------------------------------------------- */
 
 int		init_ray_direction(t_ray_dir *ray, t_render *render, int x);
 void	calculate_delta_and_step(t_ray_dir *ray);
@@ -124,25 +103,13 @@ void	calculate_side_distance(t_ray_dir *ray, t_render *render);
 void	dda_algorithm(t_ray_dir *ray, t_render *render);
 double	calculate_wall_distance(t_ray_dir *ray, t_render *render);
 
-/* -----------------------------------------------------------------------------
- *  Render / pixel
- * --------------------------------------------------------------------------- */
-
 int		render_frame(t_render *render);
 void	put_pixel_to_mem(t_image *img, int x, int y, int color);
-
-/* -----------------------------------------------------------------------------
- *  Game loop / player movement & rotation
- * --------------------------------------------------------------------------- */
 
 int		game_loop(t_render *render);
 char	get_cell(t_map *map, double x, double y);
 void	try_move(t_render *render, double nx, double ny);
 void	rotate_player(t_render *render, double angle);
-
-/* -----------------------------------------------------------------------------
- *  Wall column helpers (height, texture selection & coordinates)
- * --------------------------------------------------------------------------- */
 
 void	init_wall_line(double perp_dist, t_render *render,
 			t_wall_column *wall_column);
@@ -150,10 +117,6 @@ void	select_texture_index(t_ray_dir *ray, t_wall_column *wall_column);
 double	calculate_wall_x(t_render *render, t_ray_dir *ray, double perp_dist);
 void	init_texture_coords(t_render *render, t_ray_dir *ray,
 			t_wall_column *wall_column);
-
-/* -----------------------------------------------------------------------------
- *  key hooks & window close
- * --------------------------------------------------------------------------- */
 
 int		key_press(int key, t_render *render);
 int		key_release(int key, t_render *render);

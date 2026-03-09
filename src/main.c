@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 18:21:07 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:59 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:39:04 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Config yapısındaki texture ve renk alanlarını varsayılan (boş) değerlere sıfırlar. */
-static void init_config(t_config *config)
+static void	init_config(t_config *config)
 {
 	config->no = NULL;
 	config->so = NULL;
@@ -23,11 +22,10 @@ static void init_config(t_config *config)
 	config->ceiling.is_set = 0;
 }
 
-/* Program giriş noktası: argüman kontrolü, map parse, oyuncu ve MLX başlatma, döngü. */
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_game game;
-	t_render render;
+	t_game		game;
+	t_render	render;
 
 	ft_bzero(&game, sizeof(t_game));
 	ft_bzero(&render, sizeof(t_render));

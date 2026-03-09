@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   game_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:39:26 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 15:41:57 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:43:20 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "render.h"
 
-/* ─── game loop ───────────────────────────────────────────────────────────── */
-
-/* Sistem zamanını saniye cinsinden (ondalıklı) döndürür. */
 static double	get_time_sec(void)
 {
 	struct timeval	time_value;
@@ -23,7 +20,6 @@ static double	get_time_sec(void)
 	return (time_value.tv_sec + time_value.tv_usec / 1000000.0);
 }
 
-/* Zaman farkını hesaplar ve frame süresini mantıklı bir aralıkta tutar. */
 static double	update_delta_time(t_render *render)
 {
 	double	now;
@@ -37,7 +33,6 @@ static double	update_delta_time(t_render *render)
 	return (delta_time);
 }
 
-/* Basılı hareket tuşlarına göre oyuncunun konumunu günceller. */
 static void	handle_movement(t_render *render, double move_distance)
 {
 	if (render->key_w)
@@ -58,7 +53,6 @@ static void	handle_movement(t_render *render, double move_distance)
 			render->player.y + render->player.plane_y * move_distance);
 }
 
-/* Basılı dönüş tuşlarına göre oyuncunun yönünü günceller. */
 static void	handle_rotation(t_render *render, double rotation_angle)
 {
 	if (render->key_left)
@@ -67,7 +61,6 @@ static void	handle_rotation(t_render *render, double rotation_angle)
 		rotate_player(render, rotation_angle);
 }
 
-/* Her frame'de çağrılır: delta time, hareket, dönüş ve bir frame çizimi yapar. */
 int	game_loop(t_render *render)
 {
 	double	delta_time;

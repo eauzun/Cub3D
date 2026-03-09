@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/27 14:24:25 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 14:18:59 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/09 17:42:51 by ecakdemi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* Map doğrulaması: padding, oyuncu, sıfır sınırları ve kapalılık kontrolü; hata durumunda exit_check ile çıkar. */
 int	validate_map(t_map *map, t_game *game)
 {
 	if (padding_map(map) == -1)
