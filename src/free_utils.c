@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   free_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:37:11 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:37:18 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/12 18:17:30 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include "../src/mlx_functions/render.h"
 
 static void	free_texture_path(char **path)
 {
@@ -31,7 +32,7 @@ void	free_config(t_config *config)
 	free_texture_path(&config->ea);
 }
 
-static void	free_texture_images(t_render *render)
+void	free_texture_images(t_render *render)
 {
 	int	i;
 
@@ -47,7 +48,7 @@ static void	free_texture_images(t_render *render)
 	}
 }
 
-static void	free_frame_and_window(t_render *render)
+void	free_frame_and_window(t_render *render)
 {
 	if (render->frame.mlx_img)
 	{

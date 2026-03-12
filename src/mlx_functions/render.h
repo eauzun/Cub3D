@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 15:30:52 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 19:58:06 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/12 18:18:42 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_config		t_config;
 typedef struct s_map		t_map;
 typedef struct s_ray_dir	t_ray_dir;
 typedef struct s_game		t_game;
+typedef struct s_render		t_render;
 
 # define WINDOW_WIDTH   800
 # define WINDOW_HEIGHT  600
@@ -117,7 +118,7 @@ void	select_texture_index(t_ray_dir *ray, t_wall_column *wall_column);
 double	calculate_wall_x(t_render *render, t_ray_dir *ray, double perp_dist);
 void	init_texture_coords(t_render *render, t_ray_dir *ray,
 			t_wall_column *wall_column);
-
+void	load_textures(t_render *render);
 int		key_press(int key, t_render *render);
 int		key_release(int key, t_render *render);
 int		on_close(t_render *render);

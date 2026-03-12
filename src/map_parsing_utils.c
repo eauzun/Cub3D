@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_parsing_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 17:40:43 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:40:54 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/12 18:01:27 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	parse_texture(char *line, t_game *game)
 	return (0);
 }
 
-static int	is_header_identifier(char *line)
+int	is_header_identifier(char *line)
 {
 	if (ft_strncmp(line, "NO ", 3) == 0)
 		return (1);

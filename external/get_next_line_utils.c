@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emuzun < emuzun@student.42istanbul.com.    +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 23:58:26 by emuzun            #+#    #+#             */
-/*   Updated: 2026/03/09 19:51:26 by emuzun           ###   ########.fr       */
+/*   Updated: 2026/03/12 18:30:17 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ size_t	ft_strnl(char *s)
 	return (0);
 }
 
-
 char	*extract_line(char **all_line)
 {
 	char	*line;
@@ -33,7 +32,6 @@ char	*extract_line(char **all_line)
 
 	line = till_nl(*all_line);
 	tmp = return_rest(*all_line);
-	free(*all_line);
 	*all_line = tmp;
 	if (!line && *all_line)
 	{

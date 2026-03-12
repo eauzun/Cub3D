@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_map_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/03 19:02:46 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:42:40 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/12 18:15:21 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int	validate_cell(t_map *map, int x, int y)
 	return (0);
 }
 
-static int	validate_player(t_map *map)
+int	validate_player(t_map *map)
 {
 	int	x;
 	int	y;
@@ -98,7 +98,7 @@ static int	validate_player(t_map *map)
 	return (0);
 }
 
-static int	is_map_closed(t_map *map, t_game *game)
+int	is_map_closed(t_map *map, t_game *game)
 {
 	int	open;
 

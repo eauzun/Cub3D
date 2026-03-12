@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   texture_loader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ecakdemi <ecakdemi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: emuzun <emuzun@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 13:32:35 by ecakdemi          #+#    #+#             */
-/*   Updated: 2026/03/09 17:47:43 by ecakdemi         ###   ########.fr       */
+/*   Updated: 2026/03/12 18:20:39 by emuzun           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	load_single_texture(t_render *render, t_image *image,
 	image->height = texture_height;
 }
 
-static void	load_textures(t_render *render)
+void	load_textures(t_render *render)
 {
 	char	*texture_paths[4];
 	int		index;
